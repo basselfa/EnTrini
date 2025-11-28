@@ -4,26 +4,26 @@
   "properties": {
     "gym_id": {
       "type": "string",
-      "description": "ID de la salle de sport"
+      "description": "ID del gimnasio"
     },
     "user_email": {
       "type": "string",
       "format": "email",
-      "description": "Email de l'utilisateur"
+      "description": "Email del usuario"
     },
     "user_name": {
       "type": "string",
-      "description": "Nom de l'utilisateur"
+      "description": "Nombre del usuario"
     },
     "rating": {
       "type": "number",
       "minimum": 1,
       "maximum": 5,
-      "description": "Note de 1 à 5 étoiles"
+      "description": "Calificación de 1 a 5 estrellas"
     },
     "comment": {
       "type": "string",
-      "description": "Commentaire de l'utilisateur"
+      "description": "Comentario del usuario"
     }
   },
   "required": [

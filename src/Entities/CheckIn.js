@@ -13,16 +13,16 @@
     },
     "gym_id": {
       "type": "string",
-      "description": "ID de la salle de sport"
+      "description": "ID del gimnasio"
     },
     "gym_name": {
       "type": "string",
-      "description": "Nom de la salle"
+      "description": "Nombre del gimnasio"
     },
     "check_in_time": {
       "type": "string",
       "format": "date-time",
-      "description": "Heure d'entrée"
+      "description": "Hora de entrada"
     },
     "membership_status": {
       "type": "string",
@@ -31,7 +31,7 @@
         "expired",
         "invalid"
       ],
-      "description": "Statut de l'abonnement au moment du check-in"
+      "description": "Estado de la membresía en el momento del check-in"
     }
   },
   "required": [

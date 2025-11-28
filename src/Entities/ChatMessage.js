@@ -4,7 +4,7 @@
   "properties": {
     "session_id": {
       "type": "string",
-      "description": "ID de la session de chat"
+      "description": "ID de la sesión de chat"
     },
     "sender_type": {
       "type": "string",
@@ -13,20 +13,20 @@
         "ai",
         "admin"
       ],
-      "description": "Type d'expéditeur"
+      "description": "Tipo de remitente"
     },
     "sender_email": {
       "type": "string",
-      "description": "Email de l'expéditeur"
+      "description": "Email del remitente"
     },
     "message": {
       "type": "string",
-      "description": "Contenu du message"
+      "description": "Contenido del mensaje"
     },
     "timestamp": {
       "type": "string",
       "format": "date-time",
-      "description": "Heure du message"
+      "description": "Hora del mensaje"
     }
   },
   "required": [
