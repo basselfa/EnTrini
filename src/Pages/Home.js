@@ -104,7 +104,7 @@ export default function Home() {
   });
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8 select-none">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900">
@@ -152,7 +152,7 @@ export default function Home() {
           </div>
 
           <div className="space-y-4">
-            <div className="bg-white/90 p-6 border-2 border-red-100">
+            <div className="bg-white p-6 border-2 border-red-100">
               <h3 className="text-lg font-bold mb-4 text-gray-900">{t.quickActions}</h3>
               <div className="space-y-3">
                 <Link to={createPageUrl("Gyms")}>
@@ -189,7 +189,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="bg-white/80 p-6 border border-white/20">
+        <div className="bg-white p-6 border border-white/20">
           <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} justify-between items-center mb-6`}>
             <h2 className="text-2xl font-bold text-gray-900">{t.featuredGyms}</h2>
             <Link to={createPageUrl("Gyms")}>
@@ -208,15 +208,17 @@ export default function Home() {
           ) : (
             <div className="grid md:grid-cols-3 gap-6">
               {gyms.slice(0, 3).map((gym) => (
-                <div key={gym.id} className="group cursor-pointer">
-                  <div className="relative h-40 mb-3 bg-gray-200 flex items-center justify-center">
-                    <p className="text-gray-700 font-semibold">{gym.name}</p>
+                <Link key={gym.id} to={`${createPageUrl("GymDetail")}?id=${gym.id}`}>
+                  <div className="group cursor-pointer">
+                    <div className="relative h-40 mb-3 bg-gray-200 flex items-center justify-center">
+                      <p className="text-gray-700 font-semibold">{gym.name}</p>
+                    </div>
+                    <p className={`text-sm text-gray-600 flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-1`}>
+                      <MapPin className="w-4 h-4 text-purple-500" />
+                      {gym.city}
+                    </p>
                   </div>
-                  <p className={`text-sm text-gray-600 flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-1`}>
-                    <MapPin className="w-4 h-4 text-purple-500" />
-                    {gym.city}
-                  </p>
-                </div>
+                </Link>
               ))}
             </div>
           )}

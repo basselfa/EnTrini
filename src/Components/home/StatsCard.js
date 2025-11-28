@@ -4,8 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 export default function StatsCard({ title, value, icon: Icon, gradient }) {
   return (
     <Card className="border-none overflow-hidden group">
-      <div className="absolute inset-0 bg-red-50 opacity-20" />
-      <CardHeader className="relative pb-3">
+      <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
           <CardTitle className="text-sm font-medium text-gray-600">
             {title}

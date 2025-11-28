@@ -368,7 +368,7 @@ export default function ChatWidget() {
               </div>
             </div>
           </div>
-        )}
+      )}
     </>
   );
 }

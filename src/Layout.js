@@ -169,7 +169,7 @@ export default function Layout({ children }) {
             }
           `}</style>
           
-          <Sidebar className={`border-${isRTL ? 'l' : 'r'} border-white/20 bg-white/90`}>
+          <Sidebar className={`border-${isRTL ? 'l' : 'r'} border-white/20 bg-white/90 z-10`}>
             <SidebarHeader className="border-b border-gray-100 p-6">
               <div className="flex items-center gap-3">
                 <div className="relative w-14 h-14 flex-shrink-0 bg-red-600 flex items-center justify-center">

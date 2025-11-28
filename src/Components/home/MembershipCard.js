@@ -1,5 +1,4 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
 import { Calendar, CreditCard, CheckCircle2, AlertCircle, Ticket } from "lucide-react";
@@ -78,18 +77,16 @@ export default function MembershipCard({ membership }) {
 
   if (!membership) {
     return (
-      <Card className="overflow-hidden border-2 border-dashed border-gray-300">
-        <CardContent className="p-8 text-center">
-          <AlertCircle className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-          <h3 className="text-lg font-semibold mb-2 text-gray-700">{t.noMembership}</h3>
-          <p className="text-gray-500 mb-4">{t.activateMembership}</p>
-          <Link to={createPageUrl("Pricing")}>
-            <Button className="bg-gradient-to-r from-emerald-600 to-amber-500 hover:opacity-90">
-              {t.activateButton}
-            </Button>
-          </Link>
-        </CardContent>
-      </Card>
+      <div className="bg-white p-6 border-2 border-dashed border-gray-300 rounded-lg shadow-sm text-center">
+        <AlertCircle className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+        <h3 className="text-lg font-semibold mb-2 text-gray-700">{t.noMembership}</h3>
+        <p className="text-gray-500 mb-4">{t.activateMembership}</p>
+        <Link to={createPageUrl("Pricing")}>
+          <Button className="bg-gradient-to-r from-emerald-600 to-amber-500 hover:opacity-90">
+            {t.activateButton}
+          </Button>
+        </Link>
+      </div>
     );
   }
 
@@ -103,39 +100,36 @@ export default function MembershipCard({ membership }) {
   const noVisitsLeft = membership.remaining_visits <= 0;
 
   return (
-    <Card className={`overflow-hidden border-none ${isExpired || noVisitsLeft ? 'opacity-70' : ''}`}>
-        <div className={`h-2 ${planColors[membership.plan_type]}`} />
-        <CardHeader className="bg-gradient-to-br from-white to-gray-50">
-          <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} justify-between items-start`}>
-            <div>
-              <CardTitle className="text-2xl font-bold mb-2">
-                {t.plan} {t[membership.plan_type]}
-              </CardTitle>
-              <Badge 
-                variant={membership.status === 'active' && !isExpired && !noVisitsLeft ? 'default' : 'destructive'}
-                className={membership.status === 'active' && !isExpired && !noVisitsLeft
-                  ? 'bg-green-500 hover:bg-green-600' 
-                  : 'bg-red-500'
-                }
-              >
-                {membership.status === 'active' && !isExpired && !noVisitsLeft ? (
-                  <><CheckCircle2 className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} /> {t.active}</>
-                ) : (
-                  <><AlertCircle className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} /> {isExpired ? 'Expired' : noVisitsLeft ? 'No visits' : membership.status}</>
-                )}
-              </Badge>
-            </div>
-            <div className={`text-center`}>
-              <div className="text-4xl font-bold text-gray-900">
-                {membership.remaining_visits}
-              </div>
-              <span className="text-sm text-gray-500">{t.of} {membership.total_visits}</span>
-            </div>
+    <div className={`relative z-50 bg-white p-6 border-2 border-red-100 rounded-lg shadow-sm ${isExpired || noVisitsLeft ? 'opacity-70' : ''}`}>
+        <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} justify-between items-start mb-4`}>
+          <div>
+            <h3 className="text-2xl font-bold mb-2">
+              {t.plan} {t[membership.plan_type]}
+            </h3>
+            <Badge
+              variant={membership.status === 'active' && !isExpired && !noVisitsLeft ? 'default' : 'destructive'}
+              className={membership.status === 'active' && !isExpired && !noVisitsLeft
+                ? 'bg-green-500 hover:bg-green-600'
+                : 'bg-red-500'
+              }
+            >
+              {membership.status === 'active' && !isExpired && !noVisitsLeft ? (
+                <><CheckCircle2 className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} /> {t.active}</>
+              ) : (
+                <><AlertCircle className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} /> {isExpired ? 'Expired' : noVisitsLeft ? 'No visits' : membership.status}</>
+              )}
+            </Badge>
           </div>
-        </CardHeader>
-        
-        <CardContent className="p-6 space-y-4">
-          <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-3 p-4 bg-gray-50 rounded-lg`}>
+          <div className={`text-center`}>
+            <div className="text-4xl font-bold text-gray-900">
+              {membership.remaining_visits}
+            </div>
+            <span className="text-sm text-gray-500">{t.of} {membership.total_visits}</span>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-3 p-4 rounded-lg`}>
             <Ticket className="w-8 h-8 text-gray-600" />
             <div className="flex-1">
               <p className="text-sm text-gray-600 font-semibold">{t.visitsRemaining}</p>
@@ -153,7 +147,7 @@ export default function MembershipCard({ membership }) {
             </div>
           </div>
 
-          <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-3 p-3 bg-gray-50 rounded-lg`}>
+          <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-3 p-3 rounded-lg`}>
             <Calendar className="w-5 h-5 text-gray-600" />
             <div className="flex-1">
               <p className="text-sm text-gray-600">{t.validUntil}</p>
@@ -196,7 +190,7 @@ export default function MembershipCard({ membership }) {
               {isExpired || noVisitsLeft ? t.renewNow : t.managePayment}
             </Button>
           </Link>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
   );
 }
