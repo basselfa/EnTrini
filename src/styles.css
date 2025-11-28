@@ -3,31 +3,47 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    color: #000; /* Black text */
+    background-color: #fff; /* White background */
 }
 
 header {
-    background-color: #333;
-    color: #fff;
+    background-color: #000; /* Black */
+    color: #fff; /* White */
     text-align: center;
     padding: 1rem;
 }
 
 .hero {
-    background-color: #f4f4f4; /* Placeholder for background image */
-    color: #333;
+    background-color: #ffd700; /* Gold */
+    color: #000; /* Black */
     text-align: center;
     padding: 4rem 1rem;
 }
 
-.about, .contact {
+.how-it-works, .for-you, .contact-gyms {
     padding: 2rem 1rem;
     max-width: 800px;
     margin: 0 auto;
+    background-color: #fff; /* White */
+    color: #000; /* Black */
+}
+
+.how-it-works {
+    border-left: 5px solid #ffd700; /* Gold accent */
+}
+
+.for-you {
+    border-left: 5px solid #dc143c; /* Red accent */
+}
+
+.contact-gyms {
+    border-left: 5px solid #000; /* Black accent */
 }
 
 footer {
-    background-color: #333;
-    color: #fff;
+    background-color: #dc143c; /* Red */
+    color: #fff; /* White */
     text-align: center;
     padding: 1rem;
 }
