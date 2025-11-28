@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Check, Zap, Crown, CreditCard, Loader2, Ticket } from "lucide-react";
-import { motion } from "framer-motion";
 import { useLanguage } from "../Layout";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
@@ -195,18 +194,14 @@ export default function Pricing() {
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-emerald-600 via-black to-amber-500 bg-clip-text text-transparent">
             {t.title}
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             {t.subtitle}
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {plans.map((plan, index) => {
@@ -214,12 +209,7 @@ export default function Pricing() {
             const isCurrentPlan = membership?.plan_type === plan.id;
             
             return (
-              <motion.div
-                key={plan.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
+              <div key={plan.id}>
                 <Card className={`relative overflow-hidden border-2 ${
                   plan.popular ? 'border-emerald-500 shadow-2xl scale-105' : 'border-gray-200 shadow-lg'
                 } hover:shadow-2xl transition-all duration-300`}>
@@ -275,7 +265,7 @@ export default function Pricing() {
                     >
                       {processingPlan === plan.id ? (
                         <>
-                          <Loader2 className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'} animate-spin`} />
+                          <Loader2 className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                           {t.processing}
                         </>
                       ) : isCurrentPlan ? (
@@ -289,23 +279,18 @@ export default function Pricing() {
                     </Button>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mt-12 text-center"
-        >
+        <div className="mt-12 text-center">
           <div className="inline-block bg-gradient-to-r from-emerald-50 to-amber-50 rounded-2xl p-6 border border-emerald-200">
             <p className="text-gray-700 text-sm max-w-2xl">
               {t.validityNote}
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

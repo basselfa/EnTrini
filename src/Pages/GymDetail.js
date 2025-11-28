@@ -10,7 +10,6 @@ import { ArrowLeft, MapPin, Phone, Clock, Users, Mail, CheckCircle, Star, Messag
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { Skeleton } from "../components/ui/skeleton";
-import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { enUS, fr, arSA } from "date-fns/locale";
 import { useLanguage } from "../Layout";
@@ -190,11 +189,7 @@ export default function GymDetail() {
           {t.back}
         </Button>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
+        <div className="space-y-6">
           {/* Hero Image */}
           <Card className="overflow-hidden border-none shadow-2xl">
             <div className="relative h-96">
@@ -401,7 +396,7 @@ export default function GymDetail() {
               </Card>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

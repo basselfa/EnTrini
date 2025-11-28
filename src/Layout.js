@@ -86,6 +86,7 @@ export default function Layout({ children }) {
     queryKey: ['currentUser'],
     queryFn: () => base44.auth.me(),
     retry: false,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const { data: userGym } = useQuery({
@@ -96,6 +97,7 @@ export default function Layout({ children }) {
       return gyms[0] || null;
     },
     enabled: !!user?.email,
+    staleTime: 5 * 60 * 1000,
   });
 
   useEffect(() => {
@@ -152,7 +154,7 @@ export default function Layout({ children }) {
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t, isRTL }}>
       <SidebarProvider>
-        <div className={`min-h-screen flex w-full bg-gradient-to-br from-gray-50 via-white to-red-50 ${isRTL ? 'rtl' : 'ltr'}`}>
+        <div className={`min-h-screen flex w-full bg-gray-50 ${isRTL ? 'rtl' : 'ltr'}`}>
           <style>{`
             :root {
               --primary: 0 70% 45%;
@@ -167,14 +169,14 @@ export default function Layout({ children }) {
             }
           `}</style>
           
-          <Sidebar className={`border-${isRTL ? 'l' : 'r'} border-white/20 bg-white/90 backdrop-blur-xl`}>
+          <Sidebar className={`border-${isRTL ? 'l' : 'r'} border-white/20 bg-white/90`}>
             <SidebarHeader className="border-b border-gray-100 p-6">
               <div className="flex items-center gap-3">
-                <div className="relative w-14 h-14 flex-shrink-0 bg-gradient-to-br from-red-600 to-black rounded-xl shadow-xl flex items-center justify-center">
+                <div className="relative w-14 h-14 flex-shrink-0 bg-red-600 flex items-center justify-center">
                   <Dumbbell className="w-8 h-8 text-white" strokeWidth={2.5} />
                 </div>
                 <div>
-                  <h2 className="font-bold text-2xl bg-gradient-to-r from-red-600 via-black to-red-800 bg-clip-text text-transparent tracking-wide">
+                  <h2 className="font-bold text-2xl text-gray-900 tracking-wide">
                     ENTRINI
                   </h2>
                   <p className="text-xs text-gray-600 font-medium">{t.universalAccess}</p>
@@ -188,12 +190,12 @@ export default function Layout({ children }) {
                   <SidebarMenu>
                     {navigationItems.map((item) => (
                       <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton 
-                          asChild 
+                        <SidebarMenuButton
+                          asChild
                           className={`
                             hover:bg-gradient-to-r hover:from-red-50 hover:to-gray-50
-                            transition-all duration-300 rounded-xl mb-1 group
-                            ${location.pathname === item.url ? 'bg-gradient-to-r from-red-600 to-black text-white shadow-lg' : ''}
+                            transition-all duration-200 rounded-xl mb-1 group
+                            ${location.pathname === item.url ? 'bg-red-600 text-white' : ''}
                           `}
                         >
                           <Link to={item.url} className="flex items-center gap-3 px-4 py-3">
@@ -216,7 +218,7 @@ export default function Layout({ children }) {
               <div className="px-3 mt-6 pt-6 border-t border-gray-200">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start gap-2 border-2 hover:border-red-600 hover:bg-red-50 transition-all">
+                    <Button variant="outline" className="w-full justify-start gap-2 border-2">
                       <Globe className="w-4 h-4 text-red-600" />
                       <span className="font-semibold">{t.language}</span>
                     </Button>
@@ -238,9 +240,9 @@ export default function Layout({ children }) {
 
             <SidebarFooter className="border-t border-gray-100 p-4">
               <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-red-50 to-gray-50">
-                <Avatar className="w-10 h-10 border-2 border-red-600 shadow-md">
+                <Avatar className="w-10 h-10 border-2 border-red-600">
                   <AvatarImage src={user?.profile_image} />
-                  <AvatarFallback className="bg-gradient-to-br from-red-600 to-black text-white font-bold text-lg">
+                  <AvatarFallback className="bg-red-600 text-white font-bold text-lg">
                     {user?.full_name?.charAt(0)?.toUpperCase() || 'U'}
                   </AvatarFallback>
                 </Avatar>
@@ -255,17 +257,17 @@ export default function Layout({ children }) {
           </Sidebar>
 
           <main className="flex-1 flex flex-col">
-            <header className="bg-white/80 backdrop-blur-xl border-b border-gray-200 px-6 py-4 lg:hidden sticky top-0 z-10 shadow-sm">
+            <header className="bg-white/80 border-b border-gray-200 px-6 py-4 lg:hidden sticky top-0 z-10">
               <div className="flex items-center gap-4 justify-between">
                 <div className="flex items-center gap-3">
-                  <SidebarTrigger className="hover:bg-red-100 p-2 rounded-lg transition-colors">
+                  <SidebarTrigger className="p-2 rounded-lg">
                     <Menu className="w-5 h-5" />
                   </SidebarTrigger>
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-red-600 to-black rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-red-600 flex items-center justify-center">
                       <Dumbbell className="w-5 h-5 text-white" strokeWidth={2.5} />
                     </div>
-                    <h1 className="text-xl font-bold bg-gradient-to-r from-red-600 to-black bg-clip-text text-transparent">
+                    <h1 className="text-xl font-bold text-gray-900">
                       ENTRINI
                     </h1>
                   </div>

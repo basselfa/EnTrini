@@ -6,7 +6,6 @@ import { Input } from "../../components/ui/input";
 import { Badge } from "../../components/ui/badge";
 import { Avatar, AvatarFallback } from "../../components/ui/avatar";
 import { MessageCircle, X, Send, User, Loader2, AlertCircle } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { useLanguage } from "../../Layout";
 
@@ -228,36 +227,23 @@ export default function ChatWidget() {
   return (
     <>
       {/* Floating Button */}
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            className={`fixed ${isRTL ? 'left-6' : 'right-6'} bottom-6 z-50`}
+      {!isOpen && (
+        <div className={`fixed ${isRTL ? 'left-6' : 'right-6'} bottom-6 z-50`}>
+          <Button
+            onClick={() => setIsOpen(true)}
+            className="w-16 h-16 bg-red-600"
+            size="icon"
           >
-            <Button
-              onClick={() => setIsOpen(true)}
-              className="w-16 h-16 rounded-full bg-gradient-to-r from-red-600 to-black hover:opacity-90 shadow-2xl"
-              size="icon"
-            >
-              <MessageCircle className="w-7 h-7 text-white" />
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <MessageCircle className="w-7 h-7 text-white" />
+          </Button>
+        </div>
+      )}
 
       {/* Chat Window */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 100, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 100, scale: 0.8 }}
-            className={`fixed ${isRTL ? 'left-6' : 'right-6'} bottom-6 w-96 h-[600px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden border-2 border-red-200`}
-          >
+      {isOpen && (
+        <div className={`fixed ${isRTL ? 'left-6' : 'right-6'} bottom-6 w-96 h-[600px] bg-white z-50 flex flex-col overflow-hidden border-2 border-red-200`}>
             {/* Header */}
-            <div className="bg-gradient-to-r from-red-600 to-black p-4 flex items-center justify-between">
+            <div className="bg-red-600 p-4 flex items-center justify-between">
               <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-3`}>
                 <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
                   <MessageCircle className="w-6 h-6 text-red-600" />
@@ -273,7 +259,7 @@ export default function ChatWidget() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsOpen(false)}
-                className="text-white hover:bg-white/20"
+                className="text-white"
               >
                 <X className="w-5 h-5" />
               </Button>
@@ -283,7 +269,7 @@ export default function ChatWidget() {
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
               {loadingMessages ? (
                 <div className="flex justify-center items-center h-full">
-                  <Loader2 className="w-8 h-8 animate-spin text-red-600" />
+                  <Loader2 className="w-8 h-8 text-red-600" />
                 </div>
               ) : messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center text-gray-500">
@@ -299,7 +285,7 @@ export default function ChatWidget() {
                     >
                       {msg.sender_type !== 'user' && (
                         <Avatar className="w-8 h-8">
-                          <AvatarFallback className="bg-gradient-to-br from-red-600 to-black text-white text-xs">
+                          <AvatarFallback className="bg-red-600 text-white text-xs">
                             {msg.sender_type === 'ai' ? 'AI' : 'A'}
                           </AvatarFallback>
                         </Avatar>
@@ -307,7 +293,7 @@ export default function ChatWidget() {
                       <div
                         className={`max-w-[75%] p-3 rounded-2xl ${
                           msg.sender_type === 'user'
-                            ? 'bg-gradient-to-r from-red-600 to-black text-white'
+                            ? 'bg-red-600 text-white'
                             : 'bg-white border border-gray-200 text-gray-800'
                         }`}
                       >
@@ -323,15 +309,15 @@ export default function ChatWidget() {
                   {isAITyping && (
                     <div className={`flex ${isRTL ? 'justify-end' : 'justify-start'} gap-2`}>
                       <Avatar className="w-8 h-8">
-                        <AvatarFallback className="bg-gradient-to-br from-red-600 to-black text-white text-xs">
+                        <AvatarFallback className="bg-red-600 text-white text-xs">
                           AI
                         </AvatarFallback>
                       </Avatar>
                       <div className="bg-white border border-gray-200 p-3 rounded-2xl">
                         <div className="flex gap-1">
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                          <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                          <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                          <div className="w-2 h-2 bg-gray-400 rounded-full" />
                         </div>
                       </div>
                     </div>
@@ -371,19 +357,18 @@ export default function ChatWidget() {
                 <Button
                   onClick={handleSendMessage}
                   disabled={!message.trim() || sendMessageMutation.isPending || isAITyping}
-                  className="bg-gradient-to-r from-red-600 to-black hover:opacity-90"
+                  className="bg-red-600"
                 >
                   {sendMessageMutation.isPending ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-4 h-4" />
                   ) : (
                     <Send className="w-4 h-4" />
                   )}
                 </Button>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </>
   );
 }

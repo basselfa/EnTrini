@@ -6,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Search, MapPin, Filter, Map } from "lucide-react";
 import { Skeleton } from "../components/ui/skeleton";
 import GymCard from "../Components/gyms/GymCard";
-import { motion } from "framer-motion";
 import { useLanguage } from "../Layout";
 
 const translations = {
@@ -130,25 +129,16 @@ export default function Gyms() {
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
+        <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-emerald-600 to-amber-500 bg-clip-text text-transparent">
             {t.findGym}
           </h1>
           <p className="text-gray-600">
             {filteredGyms.length} {t.gymsAvailable}
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg p-6 mb-8 border-2 border-emerald-100"
-        >
+        <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg p-6 mb-8 border-2 border-emerald-100">
           <div className="grid md:grid-cols-2 gap-4">
             <div className="relative">
               <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-emerald-600 w-5 h-5`} />
@@ -177,7 +167,7 @@ export default function Gyms() {
               </Select>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {isLoading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -196,11 +186,7 @@ export default function Gyms() {
             ))}
           </div>
         ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-16"
-          >
+          <div className="text-center py-16">
             <Filter className="w-16 h-16 mx-auto mb-4 text-gray-300" />
             <h3 className="text-xl font-semibold text-gray-700 mb-2">
               {t.noGymsFound}
@@ -208,7 +194,7 @@ export default function Gyms() {
             <p className="text-gray-500">
               {t.adjustFilters}
             </p>
-          </motion.div>
+          </div>
         )}
       </div>
     </div>

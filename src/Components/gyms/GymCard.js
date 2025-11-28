@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
 import { MapPin, Clock, Users, Phone, ExternalLink } from "lucide-react";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../../utils";
 import { useLanguage } from "../../Layout";
@@ -46,11 +45,7 @@ export default function GymCard({ gym, index }) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
-    >
+    <div>
       <Card className="overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-300 group">
         <div className="relative h-48 overflow-hidden">
           <img
@@ -134,6 +129,6 @@ export default function GymCard({ gym, index }) {
           </Link>
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   );
 }

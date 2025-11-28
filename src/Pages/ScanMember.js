@@ -8,7 +8,6 @@ import { Label } from "../components/ui/label";
 import { Badge } from "../components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { QrCode, Search, CheckCircle, XCircle, Calendar, Mail, Phone, AlertCircle, Loader2, Ticket, Coins, CreditCard } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { format, differenceInDays } from "date-fns";
 import { enUS, fr, arSA } from "date-fns/locale";
 import { useLanguage } from "../Layout";
@@ -329,11 +328,7 @@ export default function ScanMember() {
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
+        <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-emerald-600 to-amber-500 bg-clip-text text-transparent">
             {t.scanMember}
           </h1>
@@ -343,15 +338,12 @@ export default function ScanMember() {
               {userGym.name}
             </Badge>
           )}
-        </motion.div>
+        </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             {/* Scan Input Card */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-            >
+            <div>
               <Card className="border-none shadow-xl">
                 <CardHeader className="bg-gradient-to-r from-emerald-50 to-amber-50">
                   <CardTitle className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2`}>
@@ -378,7 +370,7 @@ export default function ScanMember() {
                       >
                         {isScanning ? (
                           <>
-                            <Loader2 className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'} animate-spin`} />
+                            <Loader2 className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                             {t.scanning}
                           </>
                         ) : (
@@ -392,27 +384,19 @@ export default function ScanMember() {
                   </div>
 
                   {error && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="p-4 bg-red-50 border-2 border-red-200 rounded-xl flex items-center gap-3"
-                    >
+                    <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl flex items-center gap-3">
                       <XCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
                       <p className="text-red-800 font-medium">{error}</p>
-                    </motion.div>
+                    </div>
                   )}
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
 
             {/* Member Info Card */}
-            <AnimatePresence>
+            <div>
               {memberData && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                >
+                <div>
                   <Card className={`border-2 shadow-xl ${
                     canUsePlanVisit
                       ? membershipData.remaining_visits <= 3
@@ -541,7 +525,7 @@ export default function ScanMember() {
                         >
                           {checkInMutation.isPending ? (
                             <>
-                              <Loader2 className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'} animate-spin`} />
+                              <Loader2 className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                               {t.checkingIn}
                             </>
                           ) : canUsePlanVisit ? (
@@ -559,20 +543,16 @@ export default function ScanMember() {
                       )}
 
                       {showSuccess && (
-                        <motion.div
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          className="p-4 bg-green-50 border-2 border-green-500 rounded-xl text-center"
-                        >
+                        <div className="p-4 bg-green-50 border-2 border-green-500 rounded-xl text-center">
                           <CheckCircle className="w-12 h-12 mx-auto mb-2 text-green-600" />
                           <p className="text-green-800 font-bold text-lg">{t.checkInSuccess}</p>
-                        </motion.div>
+                        </div>
                       )}
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               )}
-            </AnimatePresence>
+            </div>
           </div>
 
           {/* Recent Check-Ins Sidebar */}
@@ -689,7 +669,7 @@ export default function ScanMember() {
               >
                 {checkInMutation.isPending ? (
                   <>
-                    <Loader2 className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'} animate-spin`} />
+                    <Loader2 className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                     {t.processingPayment}
                   </>
                 ) : (

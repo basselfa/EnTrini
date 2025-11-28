@@ -22,13 +22,20 @@ export function DropdownMenu({ children }) {
   );
 }
 
-export function DropdownMenuTrigger({ children, onClick, ...props }) {
+export function DropdownMenuTrigger({ children, onClick, asChild, ...props }) {
+  const handleClick = (e) => {
+    onClick && onClick(e);
+    children.props.onClick && children.props.onClick(e);
+  };
+  if (asChild) {
+    return React.cloneElement(children, { onClick: handleClick, ...props });
+  }
   return (
     <button onClick={onClick} {...props}>
       {children}
     </button>
   );
-}
+} // updated
 
 export function DropdownMenuContent({ children, align = 'start', onClose, className = '', ...props }) {
   return (

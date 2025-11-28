@@ -6,7 +6,6 @@ import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { MapPin, Navigation, Phone, Clock, ExternalLink, Loader2 } from "lucide-react";
-import { motion } from "framer-motion";
 import { useLanguage } from "../Layout";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
@@ -242,7 +241,7 @@ export default function Map() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-emerald-600" />
+          <Loader2 className="w-12 h-12 mx-auto mb-4 text-emerald-600" />
           <p className="text-gray-600">{locating ? t.locatingYou : t.loading}</p>
         </div>
       </div>
@@ -252,11 +251,7 @@ export default function Map() {
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-6"
-        >
+        <div className="mb-6">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-emerald-600 to-amber-500 bg-clip-text text-transparent">
             {t.mapView}
           </h1>
@@ -264,23 +259,15 @@ export default function Map() {
             <Navigation className="w-4 h-4 text-emerald-600" />
             {t.findNearbyGyms}
           </p>
-        </motion.div>
+        </div>
 
         {locationError && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mb-4 p-4 bg-amber-50 border-2 border-amber-200 rounded-xl"
-          >
+          <div className="mb-4 p-4 bg-amber-50 border-2 border-amber-200 rounded-xl">
             <p className="text-amber-800 text-sm">{t.locationDisabled}</p>
-          </motion.div>
+          </div>
         )}
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
+        <div>
           <Card className="overflow-hidden border-none shadow-2xl">
             <CardContent className="p-0">
               <div className="h-[600px] w-full">
@@ -354,14 +341,9 @@ export default function Map() {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mt-6 grid md:grid-cols-2 gap-4"
-        >
+        <div className="mt-6 grid md:grid-cols-2 gap-4">
           <Card className="bg-gradient-to-br from-emerald-50 to-white border-emerald-100">
             <CardContent className="p-4">
               <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-3`}>
@@ -391,7 +373,7 @@ export default function Map() {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

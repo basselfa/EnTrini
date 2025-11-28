@@ -9,7 +9,6 @@ import { Textarea } from "../components/ui/textarea";
 import { Badge } from "../components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Building2, MapPin, Phone, Clock, Users, Image as ImageIcon, CheckCircle, Loader2, X } from "lucide-react";
-import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { useLanguage } from "../Layout";
@@ -249,24 +248,16 @@ export default function GymRegistration() {
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
+        <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
             {t.registerGym}
           </h1>
           <p className="text-gray-600">
             {t.joinNetwork}
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
+        <div>
           <Card className="border-none shadow-lg">
             <CardHeader className="bg-gradient-to-r from-purple-50 to-orange-50">
               <CardTitle className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2 text-2xl`}>
@@ -399,7 +390,7 @@ export default function GymRegistration() {
                       disabled={uploadingImage}
                       className="flex-1"
                     />
-                    {uploadingImage && <Loader2 className="w-5 h-5 animate-spin text-purple-600" />}
+                    {uploadingImage && <Loader2 className="w-5 h-5 text-purple-600" />}
                     {formData.image_url && <CheckCircle className="w-5 h-5 text-green-500" />}
                   </div>
                   {formData.image_url && (
@@ -449,7 +440,7 @@ export default function GymRegistration() {
                 >
                   {createGymMutation.isPending ? (
                     <>
-                      <Loader2 className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'} animate-spin`} />
+                      <Loader2 className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                       {t.registering}
                     </>
                   ) : (
@@ -466,7 +457,7 @@ export default function GymRegistration() {
               </form>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

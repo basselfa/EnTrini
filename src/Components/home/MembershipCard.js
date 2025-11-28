@@ -5,7 +5,6 @@ import { Button } from "../../components/ui/button";
 import { Calendar, CreditCard, CheckCircle2, AlertCircle, Ticket } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
 import { enUS, fr, arSA } from "date-fns/locale";
-import { motion } from "framer-motion";
 import { useLanguage } from "../../Layout";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../../utils";
@@ -68,8 +67,8 @@ const translations = {
 };
 
 const planColors = {
-  classic: "from-blue-500 to-cyan-500",
-  professional: "from-emerald-500 to-teal-500",
+  classic: "bg-blue-500",
+  professional: "bg-green-500",
 };
 
 export default function MembershipCard({ membership }) {
@@ -104,13 +103,8 @@ export default function MembershipCard({ membership }) {
   const noVisitsLeft = membership.remaining_visits <= 0;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Card className={`overflow-hidden border-none shadow-xl ${isExpired || noVisitsLeft ? 'opacity-70' : ''}`}>
-        <div className={`h-2 bg-gradient-to-r ${planColors[membership.plan_type]}`} />
+    <Card className={`overflow-hidden border-none ${isExpired || noVisitsLeft ? 'opacity-70' : ''}`}>
+        <div className={`h-2 ${planColors[membership.plan_type]}`} />
         <CardHeader className="bg-gradient-to-br from-white to-gray-50">
           <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} justify-between items-start`}>
             <div>
@@ -132,7 +126,7 @@ export default function MembershipCard({ membership }) {
               </Badge>
             </div>
             <div className={`text-center`}>
-              <div className={`text-4xl font-bold bg-gradient-to-r ${planColors[membership.plan_type]} bg-clip-text text-transparent`}>
+              <div className="text-4xl font-bold text-gray-900">
                 {membership.remaining_visits}
               </div>
               <span className="text-sm text-gray-500">{t.of} {membership.total_visits}</span>
@@ -141,14 +135,14 @@ export default function MembershipCard({ membership }) {
         </CardHeader>
         
         <CardContent className="p-6 space-y-4">
-          <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-3 p-4 bg-gradient-to-br ${planColors[membership.plan_type]} bg-opacity-10 rounded-lg`}>
+          <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-3 p-4 bg-gray-50 rounded-lg`}>
             <Ticket className="w-8 h-8 text-gray-600" />
             <div className="flex-1">
               <p className="text-sm text-gray-600 font-semibold">{t.visitsRemaining}</p>
               <div className="flex items-center gap-2 mt-1">
                 <div className="flex-1 bg-gray-200 rounded-full h-3">
-                  <div 
-                    className={`h-3 rounded-full bg-gradient-to-r ${planColors[membership.plan_type]}`}
+                  <div
+                    className="h-3 rounded-full bg-blue-500"
                     style={{ width: `${(membership.remaining_visits / membership.total_visits) * 100}%` }}
                   />
                 </div>
@@ -195,8 +189,8 @@ export default function MembershipCard({ membership }) {
           )}
 
           <Link to={createPageUrl("Pricing")}>
-            <Button 
-              className={`w-full bg-gradient-to-r ${planColors[membership.plan_type]} hover:opacity-90 text-white shadow-lg`}
+            <Button
+              className={`w-full bg-blue-600 text-white`}
             >
               <CreditCard className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {isExpired || noVisitsLeft ? t.renewNow : t.managePayment}
@@ -204,6 +198,5 @@ export default function MembershipCard({ membership }) {
           </Link>
         </CardContent>
       </Card>
-    </motion.div>
   );
 }

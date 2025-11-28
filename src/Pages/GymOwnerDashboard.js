@@ -6,7 +6,6 @@ import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Building2, Users, TrendingUp, Calendar, QrCode, MapPin, Phone, Clock } from "lucide-react";
 import { Skeleton } from "../components/ui/skeleton";
-import { motion } from "framer-motion";
 import { format, startOfMonth, endOfMonth } from "date-fns";
 import { enUS, fr, arSA } from "date-fns/locale";
 import { useLanguage } from "../Layout";
@@ -148,11 +147,7 @@ export default function GymOwnerDashboard() {
   if (!gym) {
     return (
       <div className="min-h-screen p-4 md:p-8 flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center max-w-md"
-        >
+        <div className="text-center max-w-md">
           <Building2 className="w-20 h-20 mx-auto mb-4 text-gray-300" />
           <h2 className="text-2xl font-bold text-gray-700 mb-2">{t.noGym}</h2>
           <p className="text-gray-500 mb-6">{t.registerGym}</p>
@@ -161,7 +156,7 @@ export default function GymOwnerDashboard() {
               {t.registerButton}
             </Button>
           </Link>
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -192,24 +187,16 @@ export default function GymOwnerDashboard() {
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
+        <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-emerald-600 to-amber-500 bg-clip-text text-transparent">
             {t.dashboard}
           </h1>
           <p className="text-gray-600">{t.manageGym}</p>
-        </motion.div>
+        </div>
 
         {/* Stats Grid */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
+          <div>
             <Card className="border-none shadow-xl overflow-hidden">
               <div className="h-2 bg-gradient-to-r from-emerald-600 to-emerald-400" />
               <CardContent className="p-6">
@@ -224,13 +211,9 @@ export default function GymOwnerDashboard() {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+          <div>
             <Card className="border-none shadow-xl overflow-hidden">
               <div className="h-2 bg-gradient-to-r from-amber-600 to-amber-400" />
               <CardContent className="p-6">
@@ -245,13 +228,9 @@ export default function GymOwnerDashboard() {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
+          <div>
             <Card className="border-none shadow-xl overflow-hidden">
               <div className="h-2 bg-gradient-to-r from-blue-600 to-blue-400" />
               <CardContent className="p-6">
@@ -266,17 +245,13 @@ export default function GymOwnerDashboard() {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Gym Info Card */}
           <div className="lg:col-span-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
+            <div>
               <Card className="border-none shadow-xl overflow-hidden">
                 <div className="relative h-48">
                   <img
@@ -346,16 +321,12 @@ export default function GymOwnerDashboard() {
                   </Link>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           </div>
 
           {/* Recent Activity Sidebar */}
           <div>
-            <motion.div
-              initial={{ opacity: 0, x: isRTL ? -20 : 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 }}
-            >
+            <div>
               <Card className="border-none shadow-xl sticky top-8">
                 <CardHeader className="bg-gradient-to-br from-emerald-50 to-amber-50">
                   <CardTitle>{t.recentActivity}</CardTitle>
@@ -389,7 +360,7 @@ export default function GymOwnerDashboard() {
                   )}
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

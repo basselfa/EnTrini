@@ -8,7 +8,6 @@ import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { User, Mail, Phone, MapPin, Calendar, Heart, Save, Loader2, QrCode } from "lucide-react";
-import { motion } from "framer-motion";
 import { Skeleton } from "../components/ui/skeleton";
 import { useLanguage } from "../Layout";
 import QRCodeComponent from "../Components/profile/QRCodeComponent";
@@ -136,22 +135,14 @@ export default function Profile() {
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
+        <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
             {t.myProfile}
           </h1>
           <p className="text-gray-600">{t.manageInfo}</p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-        >
+        <div>
           <Card className="mb-6 border-none shadow-lg overflow-hidden">
             <div className="h-32 bg-gradient-to-r from-emerald-600 via-black to-amber-500" />
             <CardContent className="relative pt-0 pb-6">
@@ -203,15 +194,11 @@ export default function Profile() {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
+            <div>
               <Card className="border-none shadow-lg">
                 <CardHeader>
                   <CardTitle className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2`}>
@@ -321,7 +308,7 @@ export default function Profile() {
                       >
                         {updateMutation.isPending ? (
                           <>
-                            <Loader2 className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'} animate-spin`} />
+                            <Loader2 className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                             {t.saving}
                           </>
                         ) : (
@@ -335,17 +322,13 @@ export default function Profile() {
                   </form>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           </div>
 
           <div className="lg:col-span-1">
-            <motion.div
-              initial={{ opacity: 0, x: isRTL ? -20 : 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-            >
+            <div>
               <QRCodeComponent user={user} />
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

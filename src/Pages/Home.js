@@ -5,7 +5,6 @@ import { Dumbbell, Building2, TrendingUp, MapPin, CreditCard } from "lucide-reac
 import { Skeleton } from "../components/ui/skeleton";
 import MembershipCard from "../Components/home/MembershipCard";
 import StatsCard from "../Components/home/StatsCard";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { Button } from "../components/ui/button";
@@ -107,18 +106,14 @@ export default function Home() {
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-red-600 via-black to-red-800 bg-clip-text text-transparent">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900">
             {t.welcome}
           </h1>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto font-medium">
             {t.subtitle}
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <StatsCard
@@ -156,61 +151,49 @@ export default function Home() {
             )}
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: isRTL ? -20 : 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-            className="space-y-4"
-          >
-            <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg p-6 border-2 border-red-100">
+          <div className="space-y-4">
+            <div className="bg-white/90 p-6 border-2 border-red-100">
               <h3 className="text-lg font-bold mb-4 text-gray-900">{t.quickActions}</h3>
               <div className="space-y-3">
                 <Link to={createPageUrl("Gyms")}>
-                  <Button className={`w-full bg-gradient-to-r from-red-600 to-red-500 hover:opacity-90 ${isRTL ? 'flex-row-reverse' : ''} shadow-md`}>
-                    <Dumbbell className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                  <Button className={`w-full bg-red-600 hover:bg-red-700 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     {t.exploreGyms}
                   </Button>
                 </Link>
                 
                 <Link to={createPageUrl("Pricing")}>
-                  <Button variant="outline" className={`w-full hover:bg-gray-50 border-2 border-gray-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <CreditCard className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                  <Button variant="outline" className={`w-full border-2 border-gray-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     {t.viewPricing}
                   </Button>
                 </Link>
-                
+
                 <Link to={createPageUrl("Profile")}>
-                  <Button variant="outline" className={`w-full hover:bg-red-50 border-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <Button variant="outline" className={`w-full border-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     {t.editProfile}
                   </Button>
                 </Link>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-red-600 via-black to-red-900 rounded-2xl shadow-lg p-6 text-white">
+            <div className="bg-red-600 p-6 text-white">
               <h3 className="text-lg font-bold mb-2">{t.gymOwner}</h3>
               <p className="text-sm text-white/90 mb-4">
                 {t.gymOwnerText}
               </p>
               <Link to={createPageUrl("GymRegistration")}>
-                <Button variant="secondary" className="w-full bg-white text-black hover:bg-gray-100 font-semibold">
+                <Button variant="secondary" className="w-full bg-white text-black font-semibold">
                   {t.moreInfo}
                 </Button>
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.4 }}
-          className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg p-6 border border-white/20"
-        >
+        <div className="bg-white/80 p-6 border border-white/20">
           <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} justify-between items-center mb-6`}>
             <h2 className="text-2xl font-bold text-gray-900">{t.featuredGyms}</h2>
             <Link to={createPageUrl("Gyms")}>
-              <Button variant="outline" className="hover:bg-red-50">
+              <Button variant="outline">
                 {t.viewAll}
               </Button>
             </Link>
@@ -226,14 +209,8 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-6">
               {gyms.slice(0, 3).map((gym) => (
                 <div key={gym.id} className="group cursor-pointer">
-                  <div className="relative h-40 rounded-xl overflow-hidden mb-3">
-                    <img
-                      src={gym.image_url || 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800'}
-                      alt={gym.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <p className={`absolute bottom-3 ${isRTL ? 'right-3' : 'left-3'} text-white font-semibold`}>{gym.name}</p>
+                  <div className="relative h-40 mb-3 bg-gray-200 flex items-center justify-center">
+                    <p className="text-gray-700 font-semibold">{gym.name}</p>
                   </div>
                   <p className={`text-sm text-gray-600 flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-1`}>
                     <MapPin className="w-4 h-4 text-purple-500" />
@@ -243,7 +220,7 @@ export default function Home() {
               ))}
             </div>
           )}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
