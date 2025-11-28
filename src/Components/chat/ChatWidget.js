@@ -9,6 +9,23 @@ import { MessageCircle, X, Send, User, Loader2, AlertCircle } from "lucide-react
 import { format } from "date-fns";
 import { useLanguage } from "../../Layout";
 
+const AI_PROMPT_TEMPLATE = (userMessage, language) => `
+You are a helpful customer support assistant for TRini213, a gym membership app in Algeria.
+
+Context about TRini213:
+- We offer 2 membership plans: Classic (10 visits for 3000 DZD) and Professional (15 visits for 3500 DZD)
+- Members can access any partner gym in Algeria with their membership
+- Plans are valid for 90 days from purchase
+- If members run out of visits, they can pay 300 DZD per single visit
+- Gym owners receive 200 DZD per single visit (100 DZD commission for TRini213)
+
+User question: ${userMessage}
+
+Provide a helpful, friendly response in ${language === 'fr' ? 'French' : language === 'ar' ? 'Arabic' : 'English'}.
+If the user asks to speak with a human or if the question is too complex, suggest they can request human support.
+Keep responses concise and helpful.
+`;
+
 const translations = {
   en: {
     helpCenter: "Help Center",
@@ -53,6 +70,45 @@ const translations = {
     admin: "مشرف",
   }
 };
+
+const ChatMessage = ({ msg, isRTL }) => {
+  const isUser = msg.sender_type === 'user';
+  const avatarSrc = isUser ? null : (msg.sender_type === 'ai' ? 'AI' : 'A');
+  const time = msg.timestamp && !isNaN(new Date(msg.timestamp).getTime())
+    ? format(new Date(msg.timestamp), 'HH:mm')
+    : '';
+
+  return (
+    <div className={`flex ${isUser ? (isRTL ? 'justify-start' : 'justify-end') : (isRTL ? 'justify-end' : 'justify-start')} gap-2`}>
+      {!isUser && (
+        <Avatar className="w-8 h-8">
+          <AvatarFallback className="bg-red-600 text-white text-xs">
+            {avatarSrc}
+          </AvatarFallback>
+        </Avatar>
+      )}
+      <div className={`max-w-[75%] p-3 rounded-2xl ${isUser ? 'bg-red-600 text-white' : 'bg-white border border-gray-200 text-gray-800'}`}>
+        <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
+        <p className={`text-xs mt-1 ${isUser ? 'text-white/70' : 'text-gray-400'}`}>{time}</p>
+      </div>
+    </div>
+  );
+};
+
+const TypingIndicator = ({ isRTL }) => (
+  <div className={`flex ${isRTL ? 'justify-end' : 'justify-start'} gap-2`}>
+    <Avatar className="w-8 h-8">
+      <AvatarFallback className="bg-red-600 text-white text-xs">AI</AvatarFallback>
+    </Avatar>
+    <div className="bg-white border border-gray-200 p-3 rounded-2xl">
+      <div className="flex gap-1">
+        <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" />
+        <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+        <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
+      </div>
+    </div>
+  </div>
+);
 
 export default function ChatWidget() {
   const { language, isRTL } = useLanguage();
@@ -154,61 +210,57 @@ export default function ChatWidget() {
     },
   });
 
-  const handleSendMessage = async () => {
-    if (!message.trim()) return;
-
+  const getSessionId = async () => {
     let sessionId = activeSession?.id;
-
     if (!sessionId) {
       const newSession = await createSessionMutation.mutateAsync();
       sessionId = newSession.id;
     }
+    return sessionId;
+  };
 
-    const userMessage = message;
-    setMessage("");
-
+  const sendUserMessage = async (sessionId, userMessage) => {
     await sendMessageMutation.mutateAsync({
       sessionId,
       message: userMessage,
       senderType: 'user',
     });
+  };
 
-    // If AI mode, get AI response
+  const getAIResponse = async (sessionId, userMessage) => {
+    setIsAITyping(true);
+    try {
+      const aiResponse = await base44.integrations.Core.InvokeLLM({
+        prompt: AI_PROMPT_TEMPLATE(userMessage, language),
+        add_context_from_internet: false,
+      });
+      await sendMessageMutation.mutateAsync({
+        sessionId,
+        message: aiResponse,
+        senderType: 'ai',
+      });
+    } catch (error) {
+      console.error('AI Error:', error);
+      await sendMessageMutation.mutateAsync({
+        sessionId,
+        message: 'Sorry, I encountered an error. Would you like to speak with a human support agent?',
+        senderType: 'ai',
+      });
+    }
+    setIsAITyping(false);
+  };
+
+  const handleSendMessage = async () => {
+    if (!message.trim()) return;
+
+    const sessionId = await getSessionId();
+    const userMessage = message;
+    setMessage("");
+
+    await sendUserMessage(sessionId, userMessage);
+
     if (activeSession?.status === 'active_ai' || !activeSession) {
-      setIsAITyping(true);
-      try {
-        const aiResponse = await base44.integrations.Core.InvokeLLM({
-          prompt: `You are a helpful customer support assistant for TRini213, a gym membership app in Algeria. 
-          
-          Context about TRini213:
-          - We offer 2 membership plans: Classic (10 visits for 3000 DZD) and Professional (15 visits for 3500 DZD)
-          - Members can access any partner gym in Algeria with their membership
-          - Plans are valid for 90 days from purchase
-          - If members run out of visits, they can pay 300 DZD per single visit
-          - Gym owners receive 200 DZD per single visit (100 DZD commission for TRini213)
-          
-          User question: ${userMessage}
-          
-          Provide a helpful, friendly response in ${language === 'fr' ? 'French' : language === 'ar' ? 'Arabic' : 'English'}. 
-          If the user asks to speak with a human or if the question is too complex, suggest they can request human support.
-          Keep responses concise and helpful.`,
-          add_context_from_internet: false,
-        });
-
-        await sendMessageMutation.mutateAsync({
-          sessionId,
-          message: aiResponse,
-          senderType: 'ai',
-        });
-      } catch (error) {
-        console.error('AI Error:', error);
-        await sendMessageMutation.mutateAsync({
-          sessionId,
-          message: 'Sorry, I encountered an error. Would you like to speak with a human support agent?',
-          senderType: 'ai',
-        });
-      }
-      setIsAITyping(false);
+      await getAIResponse(sessionId, userMessage);
     }
   };
 
@@ -279,49 +331,9 @@ export default function ChatWidget() {
               ) : (
                 <>
                   {messages.map((msg) => (
-                    <div
-                      key={msg.id}
-                      className={`flex ${msg.sender_type === 'user' ? (isRTL ? 'justify-start' : 'justify-end') : (isRTL ? 'justify-end' : 'justify-start')} gap-2`}
-                    >
-                      {msg.sender_type !== 'user' && (
-                        <Avatar className="w-8 h-8">
-                          <AvatarFallback className="bg-red-600 text-white text-xs">
-                            {msg.sender_type === 'ai' ? 'AI' : 'A'}
-                          </AvatarFallback>
-                        </Avatar>
-                      )}
-                      <div
-                        className={`max-w-[75%] p-3 rounded-2xl ${
-                          msg.sender_type === 'user'
-                            ? 'bg-red-600 text-white'
-                            : 'bg-white border border-gray-200 text-gray-800'
-                        }`}
-                      >
-                        <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
-                        <p className={`text-xs mt-1 ${msg.sender_type === 'user' ? 'text-white/70' : 'text-gray-400'}`}>
-                          {msg.timestamp && !isNaN(new Date(msg.timestamp).getTime())
-                            ? format(new Date(msg.timestamp), 'HH:mm')
-                            : ''}
-                        </p>
-                      </div>
-                    </div>
+                    <ChatMessage key={msg.id} msg={msg} isRTL={isRTL} />
                   ))}
-                  {isAITyping && (
-                    <div className={`flex ${isRTL ? 'justify-end' : 'justify-start'} gap-2`}>
-                      <Avatar className="w-8 h-8">
-                        <AvatarFallback className="bg-red-600 text-white text-xs">
-                          AI
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="bg-white border border-gray-200 p-3 rounded-2xl">
-                        <div className="flex gap-1">
-                          <div className="w-2 h-2 bg-gray-400 rounded-full" />
-                          <div className="w-2 h-2 bg-gray-400 rounded-full" />
-                          <div className="w-2 h-2 bg-gray-400 rounded-full" />
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  {isAITyping && <TypingIndicator isRTL={isRTL} />}
                   <div ref={messagesEndRef} />
                 </>
               )}

@@ -112,14 +112,19 @@ export default function Gyms() {
     initialData: [],
   });
 
-  const filteredGyms = gyms.filter(gym => {
-    const matchesSearch = gym.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         gym.city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         gym.area?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         gym.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesWilaya = selectedWilaya === "all" || gym.area === selectedWilaya;
-    return matchesSearch && matchesWilaya && gym.status === 'active';
-  });
+  const filterGyms = (gyms, searchQuery, selectedWilaya) => {
+    return gyms.filter(gym => {
+      const query = searchQuery.toLowerCase();
+      const matchesSearch = gym.name.toLowerCase().includes(query) ||
+                            gym.city?.toLowerCase().includes(query) ||
+                            gym.area?.toLowerCase().includes(query) ||
+                            gym.description?.toLowerCase().includes(query);
+      const matchesWilaya = selectedWilaya === "all" || gym.area === selectedWilaya;
+      return matchesSearch && matchesWilaya && gym.status === 'active';
+    });
+  };
+
+  const filteredGyms = filterGyms(gyms, searchQuery, selectedWilaya);
 
   const getWilayaName = (wilaya) => {
     if (language === 'ar') return wilaya.nameAr;

@@ -65,62 +65,92 @@ const translations = {
   }
 };
 
-const planColors = {
-  classic: "bg-blue-500",
-  professional: "bg-green-500",
+
+// Helper functions
+const getMembershipStatus = (membership) => {
+  const expiryDate = membership.expiry_date && !isNaN(new Date(membership.expiry_date).getTime())
+    ? new Date(membership.expiry_date)
+    : null;
+
+  const daysLeft = expiryDate ? differenceInDays(expiryDate, new Date()) : -1;
+  const isExpiringSoon = daysLeft <= 7 && daysLeft > 0;
+  const isExpired = daysLeft < 0;
+  const noVisitsLeft = membership.remaining_visits <= 0;
+  const isActive = !isExpired && !noVisitsLeft;
+
+  return { expiryDate, daysLeft, isExpiringSoon, isExpired, noVisitsLeft, isActive };
+};
+
+const getLocale = (language) => language === 'fr' ? fr : language === 'ar' ? arSA : enUS;
+
+const NoMembershipCard = ({ t }) => (
+  <div className="bg-white p-6 border-2 border-dashed border-gray-300 rounded-lg shadow-sm text-center">
+    <AlertCircle className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+    <h3 className="text-lg font-semibold mb-2 text-gray-700">{t.noMembership}</h3>
+    <p className="text-gray-500 mb-4">{t.activateMembership}</p>
+    <Link to={createPageUrl("Pricing")}>
+      <Button className="bg-gradient-to-r from-emerald-600 to-amber-500 hover:opacity-90">
+        {t.activateButton}
+      </Button>
+    </Link>
+  </div>
+);
+
+const MembershipWarning = ({ type, t }) => {
+  const warnings = {
+    noVisits: { text: t.noVisitsWarning, bg: 'bg-orange-50', border: 'border-orange-200', textColor: 'text-orange-800' },
+    expiring: { text: t.expiringWarning, bg: 'bg-orange-50', border: 'border-orange-200', textColor: 'text-orange-800' },
+    expired: { text: t.expiredWarning, bg: 'bg-red-50', border: 'border-red-200', textColor: 'text-red-800' },
+  };
+
+  const warning = warnings[type];
+  if (!warning) return null;
+
+  return (
+    <div className={`p-3 ${warning.bg} border ${warning.border} rounded-lg`}>
+      <p className={`text-sm ${warning.textColor}`}>{warning.text}</p>
+    </div>
+  );
+};
+
+const StatusBadge = ({ isActive, isExpired, noVisitsLeft, t, isRTL }) => {
+  const getBadgeProps = () => {
+    if (isActive) return { variant: 'default', className: 'bg-green-500 hover:bg-green-600', text: t.active, icon: CheckCircle2 };
+    if (isExpired) return { variant: 'destructive', className: 'bg-red-500', text: 'Expired' };
+    if (noVisitsLeft) return { variant: 'destructive', className: 'bg-red-500', text: 'No visits' };
+    return { variant: 'destructive', className: 'bg-red-500', text: 'Inactive' };
+  };
+
+  const { variant, className, text, icon: Icon = AlertCircle } = getBadgeProps();
+
+  return (
+    <Badge variant={variant} className={className}>
+      <Icon className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} /> {text}
+    </Badge>
+  );
 };
 
 export default function MembershipCard({ membership }) {
   const { language, isRTL } = useLanguage();
   const t = translations[language];
-  const locale = language === 'fr' ? fr : language === 'ar' ? arSA : enUS;
+  const locale = getLocale(language);
 
   if (!membership) {
-    return (
-      <div className="bg-white p-6 border-2 border-dashed border-gray-300 rounded-lg shadow-sm text-center">
-        <AlertCircle className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-        <h3 className="text-lg font-semibold mb-2 text-gray-700">{t.noMembership}</h3>
-        <p className="text-gray-500 mb-4">{t.activateMembership}</p>
-        <Link to={createPageUrl("Pricing")}>
-          <Button className="bg-gradient-to-r from-emerald-600 to-amber-500 hover:opacity-90">
-            {t.activateButton}
-          </Button>
-        </Link>
-      </div>
-    );
+    return <NoMembershipCard t={t} />;
   }
 
-  const expiryDate = membership.expiry_date && !isNaN(new Date(membership.expiry_date).getTime())
-    ? new Date(membership.expiry_date)
-    : null;
-  
-  const daysLeft = expiryDate ? differenceInDays(expiryDate, new Date()) : -1;
-  const isExpiringSoon = daysLeft <= 7 && daysLeft > 0;
-  const isExpired = daysLeft < 0;
-  const noVisitsLeft = membership.remaining_visits <= 0;
+  const { expiryDate, daysLeft, isExpiringSoon, isExpired, noVisitsLeft, isActive } = getMembershipStatus(membership);
 
   return (
-    <div className={`relative z-50 bg-white p-6 border-2 border-red-100 rounded-lg shadow-sm ${isExpired || noVisitsLeft ? 'opacity-70' : ''}`}>
+    <div className={`relative z-50 bg-white p-6 border-2 border-red-100 rounded-lg shadow-sm ${!isActive ? 'opacity-70' : ''}`}>
         <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} justify-between items-start mb-4`}>
           <div>
             <h3 className="text-2xl font-bold mb-2">
               {t.plan} {t[membership.plan_type]}
             </h3>
-            <Badge
-              variant={membership.status === 'active' && !isExpired && !noVisitsLeft ? 'default' : 'destructive'}
-              className={membership.status === 'active' && !isExpired && !noVisitsLeft
-                ? 'bg-green-500 hover:bg-green-600'
-                : 'bg-red-500'
-              }
-            >
-              {membership.status === 'active' && !isExpired && !noVisitsLeft ? (
-                <><CheckCircle2 className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} /> {t.active}</>
-              ) : (
-                <><AlertCircle className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} /> {isExpired ? 'Expired' : noVisitsLeft ? 'No visits' : membership.status}</>
-              )}
-            </Badge>
+            <StatusBadge isActive={isActive} isExpired={isExpired} noVisitsLeft={noVisitsLeft} t={t} isRTL={isRTL} />
           </div>
-          <div className={`text-center`}>
+          <div className="text-center">
             <div className="text-4xl font-bold text-gray-900">
               {membership.remaining_visits}
             </div>
@@ -164,30 +194,14 @@ export default function MembershipCard({ membership }) {
             )}
           </div>
 
-          {noVisitsLeft && !isExpired && (
-            <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
-              <p className="text-sm text-orange-800">{t.noVisitsWarning}</p>
-            </div>
-          )}
-
-          {isExpiringSoon && membership.remaining_visits > 0 && (
-            <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
-              <p className="text-sm text-orange-800">{t.expiringWarning}</p>
-            </div>
-          )}
-
-          {isExpired && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-800">{t.expiredWarning}</p>
-            </div>
-          )}
+          {noVisitsLeft && !isExpired && <MembershipWarning type="noVisits" t={t} />}
+          {isExpiringSoon && membership.remaining_visits > 0 && <MembershipWarning type="expiring" t={t} />}
+          {isExpired && <MembershipWarning type="expired" t={t} />}
 
           <Link to={createPageUrl("Pricing")}>
-            <Button
-              className={`w-full bg-blue-600 text-white`}
-            >
+            <Button className="w-full bg-blue-600 text-white">
               <CreditCard className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {isExpired || noVisitsLeft ? t.renewNow : t.managePayment}
+              {isActive ? t.managePayment : t.renewNow}
             </Button>
           </Link>
         </div>

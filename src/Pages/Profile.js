@@ -87,6 +87,16 @@ const translations = {
   }
 };
 
+const FormField = ({ label, icon: Icon, children, isRTL }) => (
+  <div className="space-y-2">
+    <Label className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2`}>
+      {Icon && <Icon className="w-4 h-4 text-gray-500" />}
+      {label}
+    </Label>
+    {children}
+  </div>
+);
+
 export default function Profile() {
   const { language, isRTL } = useLanguage();
   const t = translations[language];
@@ -209,11 +219,7 @@ export default function Profile() {
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="phone" className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2`}>
-                          <Phone className="w-4 h-4 text-gray-500" />
-                          {t.phone}
-                        </Label>
+                      <FormField label={t.phone} icon={Phone} isRTL={isRTL}>
                         <Input
                           id="phone"
                           value={formData.phone}
@@ -221,13 +227,9 @@ export default function Profile() {
                           disabled={!isEditing}
                           placeholder={t.yourPhone}
                         />
-                      </div>
+                      </FormField>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="birth_date" className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2`}>
-                          <Calendar className="w-4 h-4 text-gray-500" />
-                          {t.birthDate}
-                        </Label>
+                      <FormField label={t.birthDate} icon={Calendar} isRTL={isRTL}>
                         <Input
                           id="birth_date"
                           type="date"
@@ -235,13 +237,9 @@ export default function Profile() {
                           onChange={(e) => setFormData({...formData, birth_date: e.target.value})}
                           disabled={!isEditing}
                         />
-                      </div>
+                      </FormField>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="city" className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2`}>
-                          <MapPin className="w-4 h-4 text-gray-500" />
-                          {t.city}
-                        </Label>
+                      <FormField label={t.city} icon={MapPin} isRTL={isRTL}>
                         <Input
                           id="city"
                           value={formData.city}
@@ -249,10 +247,9 @@ export default function Profile() {
                           disabled={!isEditing}
                           placeholder={t.yourCity}
                         />
-                      </div>
+                      </FormField>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="address">{t.address}</Label>
+                      <FormField label={t.address} isRTL={isRTL}>
                         <Input
                           id="address"
                           value={formData.address}
@@ -260,10 +257,9 @@ export default function Profile() {
                           disabled={!isEditing}
                           placeholder={t.yourAddress}
                         />
-                      </div>
+                      </FormField>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="emergency_contact">{t.emergencyContact}</Label>
+                      <FormField label={t.emergencyContact} isRTL={isRTL}>
                         <Input
                           id="emergency_contact"
                           value={formData.emergency_contact}
@@ -271,10 +267,9 @@ export default function Profile() {
                           disabled={!isEditing}
                           placeholder={t.contactName}
                         />
-                      </div>
+                      </FormField>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="emergency_phone">{t.emergencyPhone}</Label>
+                      <FormField label={t.emergencyPhone} isRTL={isRTL}>
                         <Input
                           id="emergency_phone"
                           value={formData.emergency_phone}
@@ -282,14 +277,10 @@ export default function Profile() {
                           disabled={!isEditing}
                           placeholder={t.emergencyNumber}
                         />
-                      </div>
+                      </FormField>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="fitness_goals" className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2`}>
-                        <Heart className="w-4 h-4 text-gray-500" />
-                        {t.fitnessGoals}
-                      </Label>
+                    <FormField label={t.fitnessGoals} icon={Heart} isRTL={isRTL}>
                       <Textarea
                         id="fitness_goals"
                         value={formData.fitness_goals}
@@ -298,7 +289,7 @@ export default function Profile() {
                         placeholder={t.fitnessGoalsPlaceholder}
                         className="h-24"
                       />
-                    </div>
+                    </FormField>
 
                     {isEditing && (
                       <Button

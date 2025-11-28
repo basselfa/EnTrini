@@ -1,4 +1,15 @@
 // Mock API client for base44
+
+const genericFilter = (data, filters = {}) => {
+  return data.filter(item => {
+    return Object.keys(filters).every(key => {
+      if (!filters[key]) return true;
+      return item[key] === filters[key];
+    });
+  });
+};
+
+// Mock API client for base44
 export const base44 = {
   auth: {
     me: async () => {
@@ -76,7 +87,7 @@ export const base44 = {
     Membership: {
       filter: async (filters = {}, sort = '', limit = 100) => {
         // Mock memberships
-        return [
+        const data = [
           {
             id: "mem1",
             user_email: "user@example.com",
@@ -88,9 +99,8 @@ export const base44 = {
             purchase_date: "2024-01-01",
             expiry_date: "2024-04-01"
           }
-        ].filter(m => {
-          return Object.keys(filters).every(key => m[key] === filters[key]);
-        });
+        ];
+        return genericFilter(data, filters);
       },
       create: async (data) => {
         return { id: "new_mem_" + Date.now(), ...data };

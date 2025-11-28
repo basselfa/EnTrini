@@ -9,7 +9,7 @@ export default function StatsCard({ title, value, icon: Icon, gradient }) {
           <CardTitle className="text-sm font-medium text-gray-600">
             {title}
           </CardTitle>
-          <div className={`p-2 rounded-lg bg-red-600`}>
+          <div className={`p-2 rounded-lg ${gradient || 'bg-red-600'}`}>
             <Icon className="w-4 h-4 text-white" />
           </div>
         </div>

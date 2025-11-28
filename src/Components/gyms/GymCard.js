@@ -34,15 +34,30 @@ const translations = {
   }
 };
 
+const getStatusProps = (status) => {
+  const props = {
+    active: { text: 'Active', className: 'bg-green-500 hover:bg-green-600' },
+    pending: { text: 'Pending', className: 'bg-yellow-500 hover:bg-yellow-600' },
+    suspended: { text: 'Suspended', className: 'bg-red-500 hover:bg-red-600' },
+  };
+  return props[status] || { text: status, className: 'bg-gray-500' };
+};
+
+const GymInfoItem = ({ icon: Icon, children, isRTL }) => (
+  <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-start gap-2 text-sm text-gray-600`}>
+    <Icon className="w-4 h-4 mt-0.5 text-purple-500 flex-shrink-0" />
+    <span className="line-clamp-1">{children}</span>
+  </div>
+);
+
+const getDescription = (gym, language) => {
+  if (gym.description) return gym.description;
+  return language === 'fr' ? 'Gymnase équipé avec les meilleures installations' : language === 'ar' ? 'نادي مجهز بأفضل المرافق' : 'Equipped gym with the best facilities';
+};
+
 export default function GymCard({ gym, index }) {
   const { language, isRTL } = useLanguage();
   const t = translations[language] || translations.en;
-
-  const statusText = {
-    active: t.active,
-    pending: t.pending,
-    suspended: t.suspended,
-  };
 
   return (
     <div>
@@ -54,16 +69,8 @@ export default function GymCard({ gym, index }) {
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-          <Badge 
-            className={`absolute top-4 ${isRTL ? 'left-4' : 'right-4'} ${
-              gym.status === 'active' 
-                ? 'bg-green-500 hover:bg-green-600' 
-                : gym.status === 'pending'
-                ? 'bg-yellow-500 hover:bg-yellow-600'
-                : 'bg-red-500 hover:bg-red-600'
-            }`}
-          >
-            {statusText[gym.status] || gym.status}
+          <Badge className={`absolute top-4 ${isRTL ? 'left-4' : 'right-4'} ${getStatusProps(gym.status).className}`}>
+            {getStatusProps(gym.status).text}
           </Badge>
         </div>
         
@@ -75,34 +82,30 @@ export default function GymCard({ gym, index }) {
         
         <CardContent className="space-y-3">
           <p className="text-sm text-gray-600 line-clamp-2">
-            {gym.description || (language === 'fr' ? 'Gymnase équipé avec les meilleures installations' : language === 'ar' ? 'نادي مجهز بأفضل المرافق' : 'Equipped gym with the best facilities')}
+            {getDescription(gym, language)}
           </p>
           
           <div className="space-y-2">
-            <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-start gap-2 text-sm text-gray-600`}>
-              <MapPin className="w-4 h-4 mt-0.5 text-purple-500 flex-shrink-0" />
-              <span className="line-clamp-1">{gym.address}, {gym.city}</span>
-            </div>
-            
+            <GymInfoItem icon={MapPin} isRTL={isRTL}>
+              {gym.address}, {gym.city}
+            </GymInfoItem>
+
             {gym.hours && (
-              <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2 text-sm text-gray-600`}>
-                <Clock className="w-4 h-4 text-orange-500 flex-shrink-0" />
-                <span>{gym.hours}</span>
-              </div>
+              <GymInfoItem icon={Clock} isRTL={isRTL}>
+                {gym.hours}
+              </GymInfoItem>
             )}
-            
+
             {gym.capacity && (
-              <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2 text-sm text-gray-600`}>
-                <Users className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                <span>{t.capacity}: {gym.capacity} {t.people}</span>
-              </div>
+              <GymInfoItem icon={Users} isRTL={isRTL}>
+                {t.capacity}: {gym.capacity} {t.people}
+              </GymInfoItem>
             )}
-            
+
             {gym.phone && (
-              <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2 text-sm text-gray-600`}>
-                <Phone className="w-4 h-4 text-green-500 flex-shrink-0" />
-                <span>{gym.phone}</span>
-              </div>
+              <GymInfoItem icon={Phone} isRTL={isRTL}>
+                {gym.phone}
+              </GymInfoItem>
             )}
           </div>
 
