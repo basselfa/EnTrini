@@ -1,4 +1,4 @@
-{
+export default {
   "name": "SingleVisitPayment",
   "type": "object",
   "properties": {

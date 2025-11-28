@@ -1,4 +1,4 @@
-{
+export default {
   "name": "Payment",
   "type": "object",
   "properties": {

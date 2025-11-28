@@ -1,4 +1,4 @@
-{
+export default {
   "name": "CheckIn",
   "type": "object",
   "properties": {

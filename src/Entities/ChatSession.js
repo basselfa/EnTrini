@@ -1,4 +1,4 @@
-{
+export default {
   "name": "ChatSession",
   "type": "object",
   "properties": {

@@ -1,4 +1,4 @@
-{
+export default {
   "name": "GymFeedback",
   "type": "object",
   "properties": {

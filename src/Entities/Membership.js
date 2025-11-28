@@ -1,4 +1,4 @@
-{
+export default {
   "name": "Membership",
   "type": "object",
   "properties": {
@@ -14,7 +14,7 @@
         "professional"
       ],
       "default": "classic",
-      "description": "Type de plan: Classic ou Professional"
+      "description": "Tipo de plan: Classic o Professional"
     },
     "status": {
       "type": "string",
@@ -28,25 +28,25 @@
     },
     "total_visits": {
       "type": "number",
-      "description": "Nombre total de visites incluses dans le plan"
+      "description": "Número total de visitas incluidas en el plan"
     },
     "remaining_visits": {
       "type": "number",
-      "description": "Nombre de visites restantes"
+      "description": "Número de visitas restantes"
     },
     "price": {
       "type": "number",
-      "description": "Prix payé en DZD"
+      "description": "Precio pagado en DZD"
     },
     "purchase_date": {
       "type": "string",
       "format": "date",
-      "description": "Date d'achat"
+      "description": "Fecha de compra"
     },
     "expiry_date": {
       "type": "string",
       "format": "date",
-      "description": "Date d'expiration (90 jours après l'achat)"
+      "description": "Fecha de expiración (90 días después de la compra)"
     }
   },
   "required": [
