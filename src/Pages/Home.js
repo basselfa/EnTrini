@@ -1,14 +1,14 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { base44 } from "../api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Dumbbell, Building2, TrendingUp, MapPin, CreditCard } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import MembershipCard from "../components/home/MembershipCard";
-import StatsCard from "../components/home/StatsCard";
+import { Skeleton } from "../components/ui/skeleton";
+import MembershipCard from "../Components/home/MembershipCard";
+import StatsCard from "../Components/home/StatsCard";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "@/utils";
-import { Button } from "@/components/ui/button";
+import { createPageUrl } from "../utils";
+import { Button } from "../components/ui/button";
 import { useLanguage } from "../Layout";
 
 const translations = {

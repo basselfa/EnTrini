@@ -1,14 +1,14 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Badge } from "../../components/ui/badge";
+import { Button } from "../../components/ui/button";
 import { Calendar, CreditCard, CheckCircle2, AlertCircle, Ticket } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
 import { enUS, fr, arSA } from "date-fns/locale";
 import { motion } from "framer-motion";
 import { useLanguage } from "../../Layout";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "@/utils";
+import { createPageUrl } from "../../utils";
 
 const translations = {
   en: {
