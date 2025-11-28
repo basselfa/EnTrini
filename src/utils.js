@@ -1,6 +1,7 @@
 export function createPageUrl(page) {
   const routes = {
     Home: "/",
+    Membership: "/membership",
     Gyms: "/gyms",
     Map: "/map",
     Pricing: "/pricing",

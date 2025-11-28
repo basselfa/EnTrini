@@ -1,9 +1,8 @@
 import React from "react";
 import { base44 } from "../api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Dumbbell, Building2, TrendingUp, MapPin, CreditCard } from "lucide-react";
+import { Dumbbell, Building2, TrendingUp, MapPin } from "lucide-react";
 import { Skeleton } from "../components/ui/skeleton";
-import MembershipCard from "../Components/home/MembershipCard";
 import StatsCard from "../Components/home/StatsCard";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
@@ -17,16 +16,11 @@ const translations = {
     availableGyms: "Available Gyms",
     visitsThisMonth: "Visits This Month",
     activeCities: "Active Cities",
-    quickActions: "Quick Actions",
-    exploreGyms: "Explore Gyms",
-    viewPricing: "View Pricing",
-    editProfile: "Edit Profile",
     registerGym: "Register Gym",
     gymOwner: "Are you a gym owner?",
     gymOwnerText: "Join our network and attract more clients. No upfront costs.",
     moreInfo: "More Information",
     featuredGyms: "Featured Gyms",
-    viewAll: "View All",
   },
   fr: {
     welcome: "Bienvenue sur ENTRINI",
@@ -34,16 +28,11 @@ const translations = {
     availableGyms: "Gymnases Disponibles",
     visitsThisMonth: "Visites ce Mois",
     activeCities: "Villes Actives",
-    quickActions: "Actions Rapides",
-    exploreGyms: "Explorer les Gymnases",
-    viewPricing: "Voir les Tarifs",
-    editProfile: "Modifier le Profil",
     registerGym: "Enregistrer Salle",
     gymOwner: "Vous êtes propriétaire?",
     gymOwnerText: "Rejoignez notre réseau et attirez plus de clients. Sans frais initiaux.",
     moreInfo: "Plus d'Informations",
     featuredGyms: "Gymnases en Vedette",
-    viewAll: "Voir Tout",
   },
   ar: {
     welcome: "مرحباً بك في ENTRINI",
@@ -51,16 +40,11 @@ const translations = {
     availableGyms: "النوادي المتاحة",
     visitsThisMonth: "الزيارات هذا الشهر",
     activeCities: "المدن النشطة",
-    quickActions: "إجراءات سريعة",
-    exploreGyms: "استكشف النوادي",
-    viewPricing: "عرض الأسعار",
-    editProfile: "تعديل الملف",
     registerGym: "تسجيل نادي",
     gymOwner: "هل أنت صاحب نادي؟",
     gymOwnerText: "انضم إلى شبكتنا واجذب المزيد من العملاء. بدون تكاليف.",
     moreInfo: "المزيد من المعلومات",
     featuredGyms: "نوادي مميزة",
-    viewAll: "عرض الكل",
   }
 };
 
@@ -73,19 +57,6 @@ export default function Home() {
     queryFn: () => base44.auth.me(),
   });
 
-  const { data: membership, isLoading: loadingMembership } = useQuery({
-    queryKey: ['myMembership', user?.email],
-    queryFn: async () => {
-      if (!user?.email) return null;
-      const memberships = await base44.entities.Membership.filter(
-        { user_email: user.email, status: 'active' },
-        '-created_date',
-        1
-      );
-      return memberships[0] || null;
-    },
-    enabled: !!user?.email,
-  });
 
   const { data: gyms, isLoading: loadingGyms } = useQuery({
     queryKey: ['gyms'],
@@ -121,84 +92,36 @@ export default function Home() {
             value={loadingGyms ? <Skeleton className="h-8 w-16" /> : gyms.length}
             icon={Building2}
             gradient="from-red-600 to-red-400"
-            delay={0}
           />
           <StatsCard
             title={t.visitsThisMonth}
             value={loadingPayments ? <Skeleton className="h-8 w-16" /> : payments.filter(p => p.status === 'completed').length}
             icon={TrendingUp}
             gradient="from-black to-gray-700"
-            delay={0.1}
           />
           <StatsCard
             title={t.activeCities}
             value={loadingGyms ? <Skeleton className="h-8 w-16" /> : new Set(gyms.map(g => g.city)).size}
             icon={MapPin}
             gradient="from-red-700 to-red-500"
-            delay={0.2}
           />
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            {loadingMembership ? (
-              <Skeleton className="h-64 w-full rounded-xl" />
-            ) : (
-              <MembershipCard 
-                membership={membership}
-                onRenew={() => {}}
-              />
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <div className="bg-white p-6 border-2 border-red-100">
-              <h3 className="text-lg font-bold mb-4 text-gray-900">{t.quickActions}</h3>
-              <div className="space-y-3">
-                <Link to={createPageUrl("Gyms")}>
-                  <Button className={`w-full bg-red-600 hover:bg-red-700 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    {t.exploreGyms}
-                  </Button>
-                </Link>
-                
-                <Link to={createPageUrl("Pricing")}>
-                  <Button variant="outline" className={`w-full border-2 border-gray-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    {t.viewPricing}
-                  </Button>
-                </Link>
-
-                <Link to={createPageUrl("Profile")}>
-                  <Button variant="outline" className={`w-full border-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    {t.editProfile}
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            <div className="bg-red-600 p-6 text-white">
-              <h3 className="text-lg font-bold mb-2">{t.gymOwner}</h3>
-              <p className="text-sm text-white/90 mb-4">
-                {t.gymOwnerText}
-              </p>
-              <Link to={createPageUrl("GymRegistration")}>
-                <Button variant="secondary" className="w-full bg-white text-black font-semibold">
-                  {t.moreInfo}
-                </Button>
-              </Link>
-            </div>
-          </div>
+        <div className="bg-red-600 p-6 text-white max-w-md mx-auto">
+          <h3 className="text-lg font-bold mb-2">{t.gymOwner}</h3>
+          <p className="text-sm text-white mb-4">
+            {t.gymOwnerText}
+          </p>
+          <Link to={createPageUrl("GymRegistration")}>
+            <Button variant="secondary" className="w-full bg-white text-black font-semibold">
+              {t.moreInfo}
+            </Button>
+          </Link>
         </div>
 
         <div className="bg-white p-6 border border-white/20">
-          <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} justify-between items-center mb-6`}>
-            <h2 className="text-2xl font-bold text-gray-900">{t.featuredGyms}</h2>
-            <Link to={createPageUrl("Gyms")}>
-              <Button variant="outline">
-                {t.viewAll}
-              </Button>
-            </Link>
-          </div>
-          
+          <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : ''}`}>{t.featuredGyms}</h2>
+
           {loadingGyms ? (
             <div className="grid md:grid-cols-3 gap-4">
               {[1, 2, 3].map(i => (
@@ -223,6 +146,7 @@ export default function Home() {
             </div>
           )}
         </div>
+
       </div>
     </div>
   );

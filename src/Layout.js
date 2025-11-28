@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Home, Dumbbell, User, Building2, Menu, Globe, Map, QrCode } from "lucide-react";
+import { Home, Dumbbell, User, Building2, Menu, Globe, Map, QrCode, CreditCard } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -30,6 +30,7 @@ import ChatWidget from "./Components/chat/ChatWidget";
 const translations = {
   en: {
     home: "Home",
+    membership: "Membership",
     gyms: "Gyms",
     map: "Map",
     profile: "My Profile",
@@ -42,6 +43,7 @@ const translations = {
   },
   fr: {
     home: "Accueil",
+    membership: "Abonnement",
     gyms: "Gymnases",
     map: "Carte",
     profile: "Mon Profil",
@@ -54,6 +56,7 @@ const translations = {
   },
   ar: {
     home: "الرئيسية",
+    membership: "العضوية",
     gyms: "النوادي الرياضية",
     map: "الخريطة",
     profile: "ملفي الشخصي",
@@ -116,6 +119,11 @@ export default function Layout({ children }) {
       icon: Home,
     },
     {
+      title: t.membership,
+      url: createPageUrl("Membership"),
+      icon: CreditCard,
+    },
+    {
       title: t.gyms,
       url: createPageUrl("Gyms"),
       icon: Dumbbell,
@@ -137,19 +145,17 @@ export default function Layout({ children }) {
     },
   ];
 
-  // Add gym owner navigation if user owns a gym
-  if (userGym) {
-    navigationItems.push({
-      title: t.gymDashboard,
-      url: createPageUrl("GymOwnerDashboard"),
-      icon: Building2,
-    });
-    navigationItems.push({
-      title: t.scanMember,
-      url: createPageUrl("ScanMember"),
-      icon: QrCode,
-    });
-  }
+  // Add gym owner navigation
+  navigationItems.push({
+    title: t.gymDashboard,
+    url: createPageUrl("GymOwnerDashboard"),
+    icon: Building2,
+  });
+  navigationItems.push({
+    title: t.scanMember,
+    url: createPageUrl("ScanMember"),
+    icon: QrCode,
+  });
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t, isRTL }}>
@@ -193,7 +199,7 @@ export default function Layout({ children }) {
                         <SidebarMenuButton
                           asChild
                           className={`
-                            hover:bg-gradient-to-r hover:from-red-50 hover:to-gray-50
+                            ${location.pathname === item.url ? '' : 'hover:bg-gradient-to-r hover:from-red-50 hover:to-gray-50'}
                             transition-all duration-200 rounded-xl mb-1 group
                             ${location.pathname === item.url ? 'bg-red-600 text-white' : ''}
                           `}

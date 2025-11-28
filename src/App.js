@@ -6,6 +6,7 @@ import Layout from './Layout';
 import { createPageUrl } from './utils';
 
 const Home = React.lazy(() => import('./Pages/Home'));
+const Membership = React.lazy(() => import('./Pages/Membership'));
 const Gyms = React.lazy(() => import('./Pages/Gyms'));
 const Map = React.lazy(() => import('./Pages/Map'));
 const Pricing = React.lazy(() => import('./Pages/Pricing'));
@@ -25,6 +26,7 @@ function App() {
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
             <Routes>
               <Route path={createPageUrl("Home")} element={<Home />} />
+              <Route path={createPageUrl("Membership")} element={<Membership />} />
               <Route path={createPageUrl("Gyms")} element={<Gyms />} />
               <Route path={createPageUrl("Map")} element={<Map />} />
               <Route path={createPageUrl("Pricing")} element={<Pricing />} />
