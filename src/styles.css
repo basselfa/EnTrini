@@ -1,32 +1,40 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Georgia', serif;
     margin: 0;
     padding: 0;
     line-height: 1.6;
     color: #000; /* Black text */
-    background-color: #fff; /* White background */
+    background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%); /* Subtle gradient for cosy feel */
 }
 
 header {
-    background-color: #000; /* Black */
-    color: #fff; /* White */
+    background-color: #fff; /* White */
+    color: #000; /* Black */
     text-align: center;
-    padding: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-bottom: 2px dotted #ffd700; /* Old school dotted border */
 }
 
 .hero {
-    background-color: #ffd700; /* Gold */
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); /* Gradient gold for cosy */
     color: #000; /* Black */
     text-align: center;
     padding: 4rem 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    margin: 1rem;
 }
 
 .how-it-works, .for-you, .contact-gyms {
     padding: 2rem 1rem;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 1rem auto;
     background-color: #fff; /* White */
     color: #000; /* Black */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border: 1px dotted #ccc; /* Old school dotted border */
 }
 
 .how-it-works {
@@ -42,15 +50,21 @@ header {
 }
 
 footer {
-    background-color: #dc143c; /* Red */
+    background: linear-gradient(135deg, #dc143c 0%, #b22222 100%); /* Gradient red for cosy */
     color: #fff; /* White */
     text-align: center;
-    padding: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    border-top: 2px dotted #ffd700; /* Old school dotted border */
 }
 
 /* Responsive */
 @media (max-width: 600px) {
     .hero {
         padding: 2rem 1rem;
+        margin: 0.5rem;
+    }
+    .how-it-works, .for-you, .contact-gyms {
+        margin: 0.5rem auto;
     }
 }

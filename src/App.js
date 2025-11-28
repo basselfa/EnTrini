@@ -11,6 +11,7 @@ function App() {
         <section className="hero">
           <h2>Welcome to EnTrini</h2>
           <p>Your premier destination for urban fitness and gym experiences.</p>
+          <p>Currently partnered with 43 gyms.</p>
         </section>
         <section className="how-it-works">
           <h2>How EnTrini Works</h2>
@@ -29,7 +30,7 @@ function App() {
         </section>
       </main>
       <footer>
-        <p>&copy; 2023 Urban Gym Club. All rights reserved.</p>
+        <p>&copy; 2025 EnTrini. All rights reserved.</p>
       </footer>
     </div>
   );
