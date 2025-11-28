@@ -120,11 +120,6 @@ export default function Layout({ children }) {
         icon: Home,
       },
       {
-        title: t.membership,
-        url: createPageUrl("Membership"),
-        icon: CreditCard,
-      },
-      {
         title: t.gyms,
         url: createPageUrl("Gyms"),
         icon: Dumbbell,
@@ -143,6 +138,11 @@ export default function Layout({ children }) {
         title: t.profile,
         url: createPageUrl("Profile"),
         icon: User,
+      },
+      {
+        title: t.membership,
+        url: createPageUrl("Membership"),
+        icon: CreditCard,
       },
       {
         title: t.gymDashboard,

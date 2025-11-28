@@ -142,7 +142,7 @@ export default function MembershipCard({ membership }) {
   const { expiryDate, daysLeft, isExpiringSoon, isExpired, noVisitsLeft, isActive } = getMembershipStatus(membership);
 
   return (
-    <div className={`relative z-50 bg-white p-6 border-2 border-red-100 rounded-lg shadow-sm ${!isActive ? 'opacity-70' : ''}`}>
+    <div className={`relative z-50 bg-white p-6 border-2 border-red-100 rounded-lg shadow-sm `}>
         <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} justify-between items-start mb-4`}>
           <div>
             <h3 className="text-2xl font-bold mb-2">
