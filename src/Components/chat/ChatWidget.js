@@ -137,7 +137,7 @@ export default function ChatWidget() {
       return sessions[0] || null;
     },
     enabled: !!user?.email && isOpen,
-    refetchInterval: isOpen ? 3000 : false,
+    refetchInterval: isOpen ? 5000 : false,
   });
 
   const { data: messages, isLoading: loadingMessages } = useQuery({
@@ -150,7 +150,7 @@ export default function ChatWidget() {
       );
     },
     enabled: !!activeSession?.id,
-    refetchInterval: isOpen ? 2000 : false,
+    refetchInterval: isOpen ? 5000 : false,
     initialData: [],
   });
 

@@ -59,6 +59,11 @@ export default {
     "capacity": {
       "type": "number",
       "description": "Capacidad máxima"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si el gimnasio es destacado"
     }
   },
   "required": [

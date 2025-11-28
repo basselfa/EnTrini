@@ -2,11 +2,11 @@ import React from "react";
 import { base44 } from "../api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Dumbbell, Building2, TrendingUp, MapPin } from "lucide-react";
-import { Skeleton } from "../components/ui/skeleton";
+import { Skeleton } from "../Components/ui/skeleton";
 import StatsCard from "../Components/home/StatsCard";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
-import { Button } from "../components/ui/button";
+import { Button } from "../Components/ui/button";
 import { useLanguage } from "../Layout";
 
 const translations = {
@@ -55,13 +55,15 @@ export default function Home() {
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
     queryFn: () => base44.auth.me(),
+    staleTime: 10 * 60 * 1000,
   });
 
 
   const { data: gyms, isLoading: loadingGyms } = useQuery({
     queryKey: ['gyms'],
-    queryFn: () => base44.entities.Gym.filter({ status: 'active' }),
+    queryFn: () => base44.entities.Gym.filter({ status: 'active', featured: true }),
     initialData: [],
+    staleTime: 5 * 60 * 1000,
   });
 
   const { data: payments, isLoading: loadingPayments } = useQuery({
@@ -72,6 +74,7 @@ export default function Home() {
     },
     enabled: !!user?.email,
     initialData: [],
+    staleTime: 2 * 60 * 1000,
   });
 
   return (
@@ -91,19 +94,16 @@ export default function Home() {
             title={t.availableGyms}
             value={loadingGyms ? <Skeleton className="h-8 w-16" /> : gyms.length}
             icon={Building2}
-            gradient="from-red-600 to-red-400"
           />
           <StatsCard
             title={t.visitsThisMonth}
             value={loadingPayments ? <Skeleton className="h-8 w-16" /> : payments.filter(p => p.status === 'completed').length}
             icon={TrendingUp}
-            gradient="from-black to-gray-700"
           />
           <StatsCard
             title={t.activeCities}
             value={loadingGyms ? <Skeleton className="h-8 w-16" /> : new Set(gyms.map(g => g.city)).size}
             icon={MapPin}
-            gradient="from-red-700 to-red-500"
           />
         </div>
 
@@ -119,7 +119,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="bg-white p-6 border border-white/20">
+     <div className="bg-white p-6 border border-white/20">
           <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : ''}`}>{t.featuredGyms}</h2>
 
           {loadingGyms ? (
@@ -146,7 +146,7 @@ export default function Home() {
             </div>
           )}
         </div>
-
+        
       </div>
     </div>
   );

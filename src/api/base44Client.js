@@ -48,7 +48,8 @@ export const base44 = {
             hours: "Mon-Fri: 6am-10pm",
             image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800",
             status: "active",
-            capacity: 100
+            capacity: 100,
+            featured: true
           },
           {
             id: "gym2",
@@ -63,7 +64,24 @@ export const base44 = {
             hours: "Mon-Sat: 7am-9pm",
             image_url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800",
             status: "active",
-            capacity: 50
+            capacity: 50,
+            featured: true
+          },
+          {
+            id: "gym3",
+            name: "Elite Fitness",
+            owner_email: "owner3@gym.com",
+            description: "Premium fitness center",
+            address: "789 Elite Blvd",
+            city: "Constantine",
+            area: "25",
+            phone: "+213555666777",
+            amenities: ["Free Weights", "Machines", "Cardio", "Swimming Pool"],
+            hours: "Mon-Sun: 6am-11pm",
+            image_url: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800",
+            status: "active",
+            capacity: 200,
+            featured: true
           }
         ];
       },

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Home, Dumbbell, User, Building2, Menu, Globe, Map, QrCode, CreditCard } from "lucide-react";
@@ -89,7 +89,7 @@ export default function Layout({ children }) {
     queryKey: ['currentUser'],
     queryFn: () => base44.auth.me(),
     retry: false,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 10 * 60 * 1000, // 10 minutes
   });
 
   const { data: userGym } = useQuery({
@@ -100,7 +100,7 @@ export default function Layout({ children }) {
       return gyms[0] || null;
     },
     enabled: !!user?.email,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 10 * 60 * 1000,
   });
 
   useEffect(() => {
@@ -112,64 +112,57 @@ export default function Layout({ children }) {
   const t = translations[language];
   const isRTL = language === 'ar';
 
-  const navigationItems = [
-    {
-      title: t.home,
-      url: createPageUrl("Home"),
-      icon: Home,
-    },
-    {
-      title: t.membership,
-      url: createPageUrl("Membership"),
-      icon: CreditCard,
-    },
-    {
-      title: t.gyms,
-      url: createPageUrl("Gyms"),
-      icon: Dumbbell,
-    },
-    {
-      title: t.map,
-      url: createPageUrl("Map"),
-      icon: Map,
-    },
-    {
-      title: t.pricing,
-      url: createPageUrl("Pricing"),
-      icon: Building2,
-    },
-    {
-      title: t.profile,
-      url: createPageUrl("Profile"),
-      icon: User,
-    },
-  ];
-
-  // Add gym owner navigation
-  navigationItems.push({
-    title: t.gymDashboard,
-    url: createPageUrl("GymOwnerDashboard"),
-    icon: Building2,
-  });
-  navigationItems.push({
-    title: t.scanMember,
-    url: createPageUrl("ScanMember"),
-    icon: QrCode,
-  });
+  const navigationItems = useMemo(() => {
+    const items = [
+      {
+        title: t.home,
+        url: createPageUrl("Home"),
+        icon: Home,
+      },
+      {
+        title: t.membership,
+        url: createPageUrl("Membership"),
+        icon: CreditCard,
+      },
+      {
+        title: t.gyms,
+        url: createPageUrl("Gyms"),
+        icon: Dumbbell,
+      },
+      {
+        title: t.map,
+        url: createPageUrl("Map"),
+        icon: Map,
+      },
+      {
+        title: t.pricing,
+        url: createPageUrl("Pricing"),
+        icon: Building2,
+      },
+      {
+        title: t.profile,
+        url: createPageUrl("Profile"),
+        icon: User,
+      },
+      {
+        title: t.gymDashboard,
+        url: createPageUrl("GymOwnerDashboard"),
+        icon: Building2,
+      },
+      {
+        title: t.scanMember,
+        url: createPageUrl("ScanMember"),
+        icon: QrCode,
+      },
+    ];
+    return items;
+  }, [t]);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t, isRTL }}>
       <SidebarProvider>
         <div className={`min-h-screen flex w-full bg-gray-50 ${isRTL ? 'rtl' : 'ltr'}`}>
           <style>{`
-            :root {
-              --primary: 0 70% 45%;
-              --primary-foreground: 0 0% 100%;
-              --secondary: 0 0% 10%;
-              --secondary-foreground: 0 0% 100%;
-              --accent: 0 85% 45%;
-            }
-            
             .rtl {
               direction: rtl;
             }
@@ -199,13 +192,12 @@ export default function Layout({ children }) {
                         <SidebarMenuButton
                           asChild
                           className={`
-                            ${location.pathname === item.url ? '' : 'hover:bg-gradient-to-r hover:from-red-50 hover:to-gray-50'}
-                            transition-all duration-200 rounded-xl mb-1 group
-                            ${location.pathname === item.url ? 'bg-red-600 text-white' : ''}
+                            rounded-xl mb-1
+                            ${location.pathname === item.url ? 'bg-red-600 text-white' : 'hover:bg-gray-100'}
                           `}
                         >
                           <Link to={item.url} className="flex items-center gap-3 px-4 py-3">
-                            <item.icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${
+                            <item.icon className={`w-5 h-5 ${
                               location.pathname === item.url ? 'text-white' : 'text-gray-700'
                             }`} />
                             <span className={`font-semibold ${
@@ -245,7 +237,7 @@ export default function Layout({ children }) {
             </SidebarContent>
 
             <SidebarFooter className="border-t border-gray-100 p-4">
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-red-50 to-gray-50">
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
                 <Avatar className="w-10 h-10 border-2 border-red-600">
                   <AvatarImage src={user?.profile_image} />
                   <AvatarFallback className="bg-red-600 text-white font-bold text-lg">

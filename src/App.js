@@ -34,7 +34,7 @@ function App() {
               <Route path={createPageUrl("GymRegistration")} element={<GymRegistration />} />
               <Route path={createPageUrl("GymOwnerDashboard")} element={<GymOwnerDashboard />} />
               <Route path={createPageUrl("ScanMember")} element={<ScanMember />} />
-              <Route path={`${createPageUrl("GymDetail")}?id=:id`} element={<GymDetail />} />
+              <Route path={createPageUrl("GymDetail")} element={<GymDetail />} />
             </Routes>
           </Suspense>
         </Layout>

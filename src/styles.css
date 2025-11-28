@@ -53,7 +53,7 @@ body {
     padding: 0;
     line-height: 1.6;
     color: #000; /* Black text */
-    background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%); /* Subtle gradient for cosy feel */
+    background: #f5f5f5;
 }
 
 header {
@@ -66,7 +66,7 @@ header {
 }
 
 .hero {
-    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); /* Gradient gold for cosy */
+    background: #ffd700;
     color: #000; /* Black */
     text-align: center;
     padding: 4rem 1rem;
@@ -99,7 +99,7 @@ header {
 }
 
 footer {
-    background: linear-gradient(135deg, #dc143c 0%, #b22222 100%); /* Gradient red for cosy */
+    background: #dc143c;
     color: #fff; /* White */
     text-align: center;
     padding: 1.5rem;
