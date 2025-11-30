@@ -2,19 +2,6 @@ import React, { createContext, useContext, useState, useEffect, useMemo } from "
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Home, Dumbbell, User, Building2, Menu, Globe, Map, QrCode, CreditCard } from "lucide-react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarProvider,
-  SidebarTrigger,
-} from "./Components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "./Components/ui/avatar";
 import { Button } from "./Components/ui/button";
 import {
@@ -160,139 +147,105 @@ export default function Layout({ children }) {
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t, isRTL }}>
-      <SidebarProvider>
-        <div className={`min-h-screen flex w-full bg-gray-50 ${isRTL ? 'rtl' : 'ltr'}`}>
-          <style>{`
-            .rtl {
-              direction: rtl;
-            }
-          `}</style>
-          
-          <Sidebar className={`border-${isRTL ? 'l' : 'r'} border-white/20 bg-white/90 z-10`}>
-            <SidebarHeader className="border-b border-gray-100 p-6">
+      <div className={`min-h-screen flex flex-col w-full bg-gray-50 ${isRTL ? 'rtl' : 'ltr'}`}>
+        <style>{`
+          .rtl {
+            direction: rtl;
+          }
+        `}</style>
+
+        <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-10">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
               <div className="flex items-center gap-3">
-                <div className="relative w-14 h-14 flex-shrink-0 bg-red-600 flex items-center justify-center">
-                  <Dumbbell className="w-8 h-8 text-white" strokeWidth={2.5} />
+                <div className="relative w-10 h-10 flex-shrink-0 bg-red-600 flex items-center justify-center rounded-lg">
+                  <Dumbbell className="w-6 h-6 text-white" strokeWidth={2.5} />
                 </div>
-                <div>
-                  <h2 className="font-bold text-2xl text-gray-900 tracking-wide">
-                    ENTRINI
-                  </h2>
-                  <p className="text-xs text-gray-600 font-medium">{t.universalAccess}</p>
-                </div>
+                <h1 className="text-xl font-bold text-gray-900">
+                  ENTRINI
+                </h1>
               </div>
-            </SidebarHeader>
-            
-            <SidebarContent className="p-3">
-              <SidebarGroup>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {navigationItems.map((item) => (
-                      <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton
-                          asChild
-                          className={`
-                            rounded-xl mb-1
-                            ${location.pathname === item.url ? 'bg-red-600 text-white' : 'hover:bg-gray-100'}
-                          `}
-                        >
-                          <Link to={item.url} className="flex items-center gap-3 px-4 py-3">
-                            <item.icon className={`w-5 h-5 ${
-                              location.pathname === item.url ? 'text-white' : 'text-gray-700'
-                            }`} />
-                            <span className={`font-semibold ${
-                              location.pathname === item.url ? 'text-white' : 'text-gray-800'
-                            }`}>
-                              {item.title}
-                            </span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
 
-              <div className="px-3 mt-6 pt-6 border-t border-gray-200">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start gap-2 border-2">
-                      <Globe className="w-4 h-4 text-red-600" />
-                      <span className="font-semibold">{t.language}</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align={isRTL ? "end" : "start"} className="w-48">
-                    <DropdownMenuItem onClick={() => setLanguage('en')} className="cursor-pointer">
-                      <span className="text-2xl mr-2">🇬🇧</span> English
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setLanguage('fr')} className="cursor-pointer">
-                      <span className="text-2xl mr-2">🇫🇷</span> Français
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setLanguage('ar')} className="cursor-pointer">
-                      <span className="text-2xl mr-2">🇩🇿</span> العربية
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </SidebarContent>
+              <nav className="hidden md:flex items-center gap-1">
+                {navigationItems.map((item) => (
+                  <Link
+                    key={item.title}
+                    to={item.url}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
+                      location.pathname === item.url
+                        ? 'bg-red-600 text-white'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span>{item.title}</span>
+                  </Link>
+                ))}
+              </nav>
+            </div>
 
-            <SidebarFooter className="border-t border-gray-100 p-4">
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
-                <Avatar className="w-10 h-10 border-2 border-red-600">
+            <div className="flex items-center gap-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="md:hidden gap-2">
+                    <Menu className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  {navigationItems.map((item) => (
+                    <DropdownMenuItem key={item.title} asChild>
+                      <Link to={item.url} className="flex items-center gap-3 cursor-pointer">
+                        <item.icon className="w-4 h-4" />
+                        <span>{item.title}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Globe className="w-4 h-4 text-red-600" />
+                    <span className="hidden sm:inline">{t.language}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={() => setLanguage('en')} className="cursor-pointer">
+                    <span className="text-2xl mr-2">🇬🇧</span> English
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setLanguage('fr')} className="cursor-pointer">
+                    <span className="text-2xl mr-2">🇫🇷</span> Français
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setLanguage('ar')} className="cursor-pointer">
+                    <span className="text-2xl mr-2">🇩🇿</span> العربية
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50">
+                <Avatar className="w-8 h-8 border-2 border-red-600">
                   <AvatarImage src={user?.profile_image} />
-                  <AvatarFallback className="bg-red-600 text-white font-bold text-lg">
+                  <AvatarFallback className="bg-red-600 text-white font-bold text-sm">
                     {user?.full_name?.charAt(0)?.toUpperCase() || 'U'}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-gray-900 text-sm truncate">
+                <div className="hidden sm:block">
+                  <p className="font-semibold text-gray-900 text-sm">
                     {user?.full_name || (language === 'fr' ? 'Utilisateur' : language === 'ar' ? 'مستخدم' : 'User')}
                   </p>
-                  <p className="text-xs text-gray-600 truncate">{user?.email}</p>
+                  <p className="text-xs text-gray-600">{user?.email}</p>
                 </div>
               </div>
-            </SidebarFooter>
-          </Sidebar>
-
-          <main className="flex-1 flex flex-col">
-            <header className="bg-white/80 border-b border-gray-200 px-6 py-4 lg:hidden sticky top-0 z-10">
-              <div className="flex items-center gap-4 justify-between">
-                <div className="flex items-center gap-3">
-                  <SidebarTrigger className="p-2 rounded-lg">
-                    <Menu className="w-5 h-5" />
-                  </SidebarTrigger>
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-red-600 flex items-center justify-center">
-                      <Dumbbell className="w-5 h-5 text-white" strokeWidth={2.5} />
-                    </div>
-                    <h1 className="text-xl font-bold text-gray-900">
-                      ENTRINI
-                    </h1>
-                  </div>
-                </div>
-                
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button size="sm" variant="outline" className="gap-2">
-                      <Globe className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => setLanguage('en')}>🇬🇧 EN</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setLanguage('fr')}>🇫🇷 FR</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setLanguage('ar')}>🇩🇿 AR</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </header>
-
-            <div className="flex-1 overflow-auto">
-              {children}
             </div>
-          </main>
-        </div>
-      </SidebarProvider>
-      
+          </div>
+        </header>
+
+        <main className="flex-1 overflow-auto">
+          {children}
+        </main>
+      </div>
+
       {/* Chat Widget */}
       <ChatWidget />
     </LanguageContext.Provider>
