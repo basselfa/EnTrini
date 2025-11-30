@@ -201,7 +201,7 @@ export default function Map() {
           setLocating(false);
         },
         (error) => {
-          console.error("Error getting location:", error);
+          console.warn("Error getting location:", error);
           setLocationError(true);
           setLocating(false);
           // Default to Algiers if location is denied

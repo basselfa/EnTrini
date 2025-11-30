@@ -86,15 +86,20 @@ export const base44 = {
         ];
       },
       filter: async (filters = {}, sort = '', limit = 100) => {
+        console.log('Gym.filter called with filters:', filters);
         const allGyms = await base44.entities.Gym.list();
-        let filtered = allGyms;
-
-        Object.keys(filters).forEach(key => {
-          if (filters[key]) {
-            filtered = filtered.filter(gym => gym[key] === filters[key]);
-          }
+        console.log('All gyms:', allGyms);
+        const filtered = allGyms.filter(gym => {
+          const result = Object.keys(filters).every(key => {
+            if (!filters[key]) return true;
+            const match = gym[key] === filters[key];
+            console.log(`Gym ${gym.id}, key ${key}, gym[${key}]=${gym[key]}, filters[${key}]=${filters[key]}, match=${match}`);
+            return match;
+          });
+          console.log(`Gym ${gym.id} included: ${result}`);
+          return result;
         });
-
+        console.log('Filtered gyms:', filtered);
         return filtered;
       },
       create: async (data) => {

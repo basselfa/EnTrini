@@ -195,8 +195,13 @@ export default function ScanMember() {
       if (!userGym?.id) return [];
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      const checkIns = await base44.entities.CheckIn.filter({ gym_id: userGym.id }, '-check_in_time', 50);
-      return checkIns.filter(ci => new Date(ci.check_in_time) >= today);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const checkIns = await base44.entities.CheckIn.filter({
+        gym_id: userGym.id,
+        check_in_time: { $gte: today.toISOString(), $lt: tomorrow.toISOString() }
+      }, '-check_in_time');
+      return checkIns;
     },
     enabled: !!userGym?.id,
     initialData: [],
@@ -253,8 +258,8 @@ export default function ScanMember() {
       const parts = memberId.includes(':') ? memberId.split(':') : [null, memberId, null];
       const userId = parts[1];
 
-      const users = await base44.entities.User.list();
-      const user = users.find(u => u.id === userId);
+      const users = await base44.entities.User.filter({ id: userId });
+      const user = users[0];
 
       if (!user) {
         setError(t.memberNotFound);

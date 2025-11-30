@@ -49,6 +49,7 @@ const translations = {
 };
 
 export default function Home() {
+  console.log('Home component rendered');
   const { language, isRTL } = useLanguage();
   const t = translations[language] || translations.en;
 
@@ -60,11 +61,18 @@ export default function Home() {
 
 
   const { data: gyms, isLoading: loadingGyms } = useQuery({
-    queryKey: ['gyms'],
-    queryFn: () => base44.entities.Gym.filter({ status: 'active', featured: true }),
+    queryKey: ['featured-gyms'],
+    queryFn: async () => {
+      const result = await base44.entities.Gym.filter({ status: 'active', featured: true });
+      console.log('Featured gyms query result:', result);
+      return result;
+    },
     initialData: [],
     staleTime: 5 * 60 * 1000,
+    refetchOnMount: 'always',
   });
+
+  console.log('Gyms data in Home component:', gyms);
 
   const { data: payments, isLoading: loadingPayments } = useQuery({
     queryKey: ['myPayments', user?.email],
@@ -133,8 +141,17 @@ export default function Home() {
               {gyms.slice(0, 3).map((gym) => (
                 <Link key={gym.id} to={`${createPageUrl("GymDetail")}?id=${gym.id}`}>
                   <div className="group cursor-pointer">
-                    <div className="relative h-40 mb-3 bg-gray-200 flex items-center justify-center">
-                      <p className="text-gray-700 font-semibold">{gym.name}</p>
+                    <div className="relative h-40 mb-3 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+                      <img
+                        src={gym.image_url}
+                        alt={gym.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                      <p className="text-gray-700 font-semibold" style={{ display: 'none' }}>{gym.name}</p>
                     </div>
                     <p className={`text-sm text-gray-600 flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-1`}>
                       <MapPin className="w-4 h-4 text-purple-500" />

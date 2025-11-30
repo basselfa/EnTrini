@@ -5,7 +5,7 @@ import './styles.css';
 import Layout from './Layout';
 import { createPageUrl } from './utils';
 
-const Home = React.lazy(() => import('./Pages/Home'));
+import Home from './Pages/Home';
 const Membership = React.lazy(() => import('./Pages/Membership'));
 const Gyms = React.lazy(() => import('./Pages/Gyms'));
 const Map = React.lazy(() => import('./Pages/Map'));
