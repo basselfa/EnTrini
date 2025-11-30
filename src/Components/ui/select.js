@@ -51,7 +51,7 @@ export function SelectValue({ placeholder, value }) {
 
 export function SelectContent({ children, onSelect, className = '' }) {
   return (
-    <div className={`absolute top-full z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md ${className}`}>
+    <div className={`absolute top-full z-[9999] min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md ${className}`}>
       {React.Children.map(children, child => {
         if (child.type === SelectItem) {
           return React.cloneElement(child, { onSelect });

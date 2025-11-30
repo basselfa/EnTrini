@@ -40,7 +40,7 @@ export function DropdownMenuTrigger({ children, onClick, asChild, ...props }) {
 export function DropdownMenuContent({ children, align = 'start', onClose, className = '', ...props }) {
   return (
     <div
-      className={`absolute z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md ${align === 'end' ? 'right-0' : 'left-0'} ${className}`}
+      className={`absolute z-[9999] min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md ${align === 'end' ? 'right-0' : 'left-0'} ${className}`}
       {...props}
     >
       {React.Children.map(children, child => {
