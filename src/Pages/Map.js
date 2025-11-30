@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { base44 } from "../api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { Card, CardContent } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge";
+import { Card, CardContent } from "../Components/ui/card";
+import { Button } from "../Components/ui/button";
+import { Badge } from "../Components/ui/badge";
 import { MapPin, Navigation, Phone, Clock, ExternalLink, Loader2 } from "lucide-react";
 import { useLanguage } from "../Layout";
 import { Link } from "react-router-dom";
@@ -216,13 +216,13 @@ export default function Map() {
   }, []);
 
   // Assign coordinates to gyms based on their area/wilaya
-  const gymsWithCoordinates = gyms.map(gym => {
+  const gymsWithCoordinates = useMemo(() => gyms.map(gym => {
     const coords = wilayaCoordinates[gym.area] || wilayaCoordinates[gym.city] || [36.7538, 3.0588];
     // Add small random offset to avoid exact overlap
     const lat = coords[0] + (Math.random() - 0.5) * 0.05;
     const lng = coords[1] + (Math.random() - 0.5) * 0.05;
     return { ...gym, coordinates: [lat, lng] };
-  }).filter(gym => gym.status === 'active');
+  }).filter(gym => gym.status === 'active'), [gyms]);
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371; // Radius of the earth in km

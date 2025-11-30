@@ -1,7 +1,7 @@
 import React from "react";
 import { base44 } from "../api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Skeleton } from "../components/ui/skeleton";
+import { Skeleton } from "../Components/ui/skeleton";
 import MembershipCard from "../Components/home/MembershipCard";
 import { useLanguage } from "../Layout";
 

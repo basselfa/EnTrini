@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "../../api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
-import { Badge } from "../../components/ui/badge";
-import { Avatar, AvatarFallback } from "../../components/ui/avatar";
+import { Button } from "../../Components/ui/button";
+import { Input } from "../../Components/ui/input";
+import { Badge } from "../../Components/ui/badge";
+import { Avatar, AvatarFallback } from "../../Components/ui/avatar";
 import { MessageCircle, X, Send, User, Loader2, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 import { useLanguage } from "../../Layout";

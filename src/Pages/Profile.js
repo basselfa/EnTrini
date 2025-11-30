@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { base44 } from "../api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { Textarea } from "../components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "../Components/ui/card";
+import { Button } from "../Components/ui/button";
+import { Input } from "../Components/ui/input";
+import { Label } from "../Components/ui/label";
+import { Textarea } from "../Components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "../Components/ui/avatar";
 import { User, Mail, Phone, MapPin, Calendar, Heart, Save, Loader2, QrCode } from "lucide-react";
-import { Skeleton } from "../components/ui/skeleton";
+import { Skeleton } from "../Components/ui/skeleton";
 import { useLanguage } from "../Layout";
 import QRCodeComponent from "../Components/profile/QRCodeComponent";
 

@@ -14,15 +14,15 @@ import {
   SidebarFooter,
   SidebarProvider,
   SidebarTrigger,
-} from "./components/ui/sidebar";
-import { Avatar, AvatarFallback, AvatarImage } from "./components/ui/avatar";
-import { Button } from "./components/ui/button";
+} from "./Components/ui/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "./Components/ui/avatar";
+import { Button } from "./Components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./components/ui/dropdown-menu";
+} from "./Components/ui/dropdown-menu";
 import { base44 } from "./api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import ChatWidget from "./Components/chat/ChatWidget";

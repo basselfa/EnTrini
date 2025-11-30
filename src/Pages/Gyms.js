@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { base44 } from "../api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Input } from "../components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import { Input } from "../Components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../Components/ui/select";
 import { Search, MapPin, Filter, Map } from "lucide-react";
-import { Skeleton } from "../components/ui/skeleton";
+import { Skeleton } from "../Components/ui/skeleton";
 import GymCard from "../Components/gyms/GymCard";
 import { useLanguage } from "../Layout";
 
