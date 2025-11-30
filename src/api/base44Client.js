@@ -1,6 +1,6 @@
 // API client for Django backend
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'http://localhost:8001/api';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('access_token');

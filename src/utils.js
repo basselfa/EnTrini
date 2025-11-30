@@ -9,7 +9,9 @@ export function createPageUrl(page) {
     GymRegistration: "/register-gym",
     GymOwnerDashboard: "/gym-dashboard",
     ScanMember: "/scan-member",
-    GymDetail: "/gym-detail"
+    GymDetail: "/gym-detail",
+    Login: "/login",
+    Register: "/register"
   };
   return routes[page] || "/";
 }

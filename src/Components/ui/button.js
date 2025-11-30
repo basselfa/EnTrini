@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Button({ children, variant = 'default', size = 'default', className = '', ...props }) {
+export function Button({ children, variant = 'default', size = 'default', className = '', asChild, ...props }) {
   const baseClasses = 'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
 
   const variants = {
@@ -19,9 +19,18 @@ export function Button({ children, variant = 'default', size = 'default', classN
     icon: 'h-10 w-10',
   };
 
+  const buttonClass = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`;
+
+  if (asChild) {
+    return React.cloneElement(children, {
+      className: `${buttonClass} ${children.props.className || ''}`,
+      ...props,
+    });
+  }
+
   return (
     <button
-      className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`}
+      className={buttonClass}
       {...props}
     >
       {children}

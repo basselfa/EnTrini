@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { Home, Dumbbell, User, Building2, Menu, Globe, Map, QrCode, CreditCard } from "lucide-react";
+import { Home, Dumbbell, User, Building2, Menu, Globe, Map, QrCode, CreditCard, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./Components/ui/avatar";
 import { Button } from "./Components/ui/button";
 import {
@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./Components/ui/dropdown-menu";
-import { base44 } from "./api/base44Client";
+import { useAuth } from "./contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import ChatWidget from "./Components/chat/ChatWidget";
 
@@ -27,6 +27,9 @@ const translations = {
     language: "Language",
     gymDashboard: "Gym Dashboard",
     scanMember: "Scan Member",
+    login: "Login",
+    register: "Register",
+    logout: "Logout",
   },
   fr: {
     home: "Accueil",
@@ -40,6 +43,9 @@ const translations = {
     language: "Langue",
     gymDashboard: "Tableau de Bord",
     scanMember: "Scanner Membre",
+    login: "Connexion",
+    register: "S'inscrire",
+    logout: "Déconnexion",
   },
   ar: {
     home: "الرئيسية",
@@ -53,6 +59,9 @@ const translations = {
     language: "اللغة",
     gymDashboard: "لوحة التحكم",
     scanMember: "مسح عضو",
+    login: "تسجيل الدخول",
+    register: "التسجيل",
+    logout: "تسجيل الخروج",
   }
 };
 
@@ -71,13 +80,7 @@ export default function Layout({ children }) {
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem('trini213_language') || 'en';
   });
-
-  const { data: user } = useQuery({
-    queryKey: ['currentUser'],
-    queryFn: () => base44.auth.me(),
-    retry: false,
-    staleTime: 10 * 60 * 1000, // 10 minutes
-  });
+  const { user, logout, loading: authLoading } = useAuth();
 
   const { data: userGym } = useQuery({
     queryKey: ['userGym', user?.email],
@@ -223,20 +226,45 @@ export default function Layout({ children }) {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50">
-                <Avatar className="w-8 h-8 border-2 border-red-600">
-                  <AvatarImage src={user?.profile_image} />
-                  <AvatarFallback className="bg-red-600 text-white font-bold text-sm">
-                    {user?.full_name?.charAt(0)?.toUpperCase() || 'U'}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="hidden sm:block">
-                  <p className="font-semibold text-gray-900 text-sm">
-                    {user?.full_name || (language === 'fr' ? 'Utilisateur' : language === 'ar' ? 'مستخدم' : 'User')}
-                  </p>
-                  <p className="text-xs text-gray-600">{user?.email}</p>
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 cursor-pointer">
+                      <Avatar className="w-8 h-8 border-2 border-red-600">
+                        <AvatarImage src={user?.profile_image} />
+                        <AvatarFallback className="bg-red-600 text-white font-bold text-sm">
+                          {user?.full_name?.charAt(0)?.toUpperCase() || 'U'}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="hidden sm:block">
+                        <p className="font-semibold text-gray-900 text-sm">
+                          {user?.full_name || (language === 'fr' ? 'Utilisateur' : language === 'ar' ? 'مستخدم' : 'User')}
+                        </p>
+                        <p className="text-xs text-gray-600">{user?.email}</p>
+                      </div>
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem onClick={logout} className="cursor-pointer text-red-600">
+                      <LogOut className="w-4 h-4 mr-2" />
+                      {t.logout || 'Logout'}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" asChild>
+                    <Link to={createPageUrl('Login')}>
+                      {t.login || 'Login'}
+                    </Link>
+                  </Button>
+                  <Button size="sm" asChild className="bg-red-600 hover:bg-red-700">
+                    <Link to={createPageUrl('Register')}>
+                      {t.register || 'Register'}
+                    </Link>
+                  </Button>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </header>

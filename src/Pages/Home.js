@@ -49,7 +49,6 @@ const translations = {
 };
 
 export default function Home() {
-  console.log('Home component rendered');
   const { language, isRTL } = useLanguage();
   const t = translations[language] || translations.en;
 
@@ -64,15 +63,12 @@ export default function Home() {
     queryKey: ['featured-gyms'],
     queryFn: async () => {
       const result = await base44.entities.Gym.filter({ status: 'active', featured: true });
-      console.log('Featured gyms query result:', result);
       return result;
     },
     initialData: [],
     staleTime: 5 * 60 * 1000,
     refetchOnMount: 'always',
   });
-
-  console.log('Gyms data in Home component:', gyms);
 
   const { data: payments, isLoading: loadingPayments } = useQuery({
     queryKey: ['myPayments', user?.email],
