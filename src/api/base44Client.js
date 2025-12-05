@@ -60,7 +60,11 @@ export const base44 = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
-      if (!response.ok) throw new Error('Registration failed');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.detail || errorData.username || errorData.email || 'Registration failed';
+        throw new Error(errorMessage);
+      }
       return response.json();
     },
   },

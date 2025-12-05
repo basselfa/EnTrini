@@ -53,7 +53,7 @@ export default function QRCodeComponent({ user }) {
         
         <div className="text-center space-y-2">
           <p className="text-sm font-semibold text-gray-700">
-            {t.memberID}: {user.id?.slice(0, 8)}
+            {t.memberID}: {user.id?.toString().slice(0, 8)}
           </p>
           <p className="text-xs text-gray-500 px-4">
             {t.showQRCodeAtGyms}
