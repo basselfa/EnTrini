@@ -1,6 +1,6 @@
 import React from "react";
-import { Badge } from "../../components/ui/badge";
-import { Button } from "../../components/ui/button";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import { Calendar, CreditCard, CheckCircle2, AlertCircle, Ticket } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
 import { enUS, fr, arSA } from "date-fns/locale";
