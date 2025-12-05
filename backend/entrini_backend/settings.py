@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-!yvnw+vixft^wzg6-9wjs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'entrini-production-backend.up.railway.app').split(',') if os.environ.get('ALLOWED_HOSTS') else ['entrini-production-backend.up.railway.app']
 
 
 # Application definition
