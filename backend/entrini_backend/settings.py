@@ -128,6 +128,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
+CORS_ALLOW_ALL_ORIGINS = True  # Temporary for testing
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,https://entrini-production.up.railway.app').split(',') if os.environ.get('CORS_ALLOWED_ORIGINS') else ["http://localhost:3000", "https://entrini-production.up.railway.app"]
 
 # REST Framework settings
