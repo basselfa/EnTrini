@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=entrini_backend.settings
+      - DEBUG=True
+    volumes:
+      - ./backend/db.sqlite3:/app/db.sqlite3
+    command: python manage.py runserver 0.0.0.0:8000
+
+  frontend:
+    build: .
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
