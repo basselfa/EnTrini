@@ -55,6 +55,7 @@ export default function Home() {
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
     queryFn: () => base44.auth.me(),
+    enabled: !!localStorage.getItem('access_token'),
     staleTime: 10 * 60 * 1000,
   });
 
