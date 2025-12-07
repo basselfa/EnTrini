@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Dumbbell, Building2, TrendingUp, MapPin } from "lucide-react";
 import { Skeleton } from "../Components/ui/skeleton";
 import StatsCard from "../Components/home/StatsCard";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { Button } from "../Components/ui/button";
 import { useLanguage } from "../Layout";
@@ -58,37 +58,9 @@ export default function Home() {
     staleTime: 10 * 60 * 1000,
   });
 
-  // If not authenticated, show simple landing page
+  // If not authenticated, redirect to login
   if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center max-w-md mx-auto px-4">
-          <div className="mb-8">
-            <div className="relative w-20 h-20 mx-auto mb-6 bg-red-600 flex items-center justify-center rounded-full">
-              <Dumbbell className="w-10 h-10 text-white" strokeWidth={2.5} />
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              ENTRINI
-            </h1>
-            <p className="text-lg text-gray-600">
-              {t.subtitle}
-            </p>
-          </div>
-          <div className="space-y-4">
-            <Button asChild className="w-full bg-red-600 hover:bg-red-700 text-white">
-              <Link to={createPageUrl('Register')}>
-                {t.register}
-              </Link>
-            </Button>
-            <Button variant="outline" asChild className="w-full">
-              <Link to={createPageUrl('Login')}>
-                {t.login}
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
+    return <Navigate to={createPageUrl('Login')} replace />;
   }
 
   const { data: gyms, isLoading: loadingGyms } = useQuery({
