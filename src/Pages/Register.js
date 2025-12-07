@@ -72,6 +72,7 @@ export default function Register() {
       const { password_confirm, ...userData } = formData;
       await register(userData);
       navigate(createPageUrl('Home'));
+      window.location.reload();
     } catch (err) {
       setError('Registration failed. Please try again.');
     } finally {
