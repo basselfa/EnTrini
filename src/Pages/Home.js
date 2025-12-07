@@ -81,6 +81,93 @@ export default function Home() {
     staleTime: 2 * 60 * 1000,
   });
 
+  // If not authenticated, show landing page
+  if (!user) {
+    return (
+      <div className="min-h-screen p-4 md:p-8 select-none">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900">
+              {t.welcome}
+            </h1>
+            <p className="text-lg text-gray-700 max-w-2xl mx-auto font-medium">
+              {t.subtitle}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <StatsCard
+              title={t.availableGyms}
+              value={loadingGyms ? <Skeleton className="h-8 w-16" /> : gyms.length}
+              icon={Building2}
+            />
+            <StatsCard
+              title={t.visitsThisMonth}
+              value="0"
+              icon={TrendingUp}
+            />
+            <StatsCard
+              title={t.activeCities}
+              value={loadingGyms ? <Skeleton className="h-8 w-16" /> : new Set(gyms.map(g => g.city)).size}
+              icon={MapPin}
+            />
+          </div>
+
+          <div className="bg-red-600 p-6 text-white max-w-md mx-auto">
+            <h3 className="text-lg font-bold mb-2">{t.gymOwner}</h3>
+            <p className="text-sm text-white mb-4">
+              {t.gymOwnerText}
+            </p>
+            <Link to={createPageUrl("GymRegistration")}>
+              <Button variant="secondary" className="w-full bg-white text-black font-semibold">
+                {t.moreInfo}
+              </Button>
+            </Link>
+          </div>
+
+          <div className="bg-white p-6 border border-white/20">
+            <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : ''}`}>{t.featuredGyms}</h2>
+
+            {loadingGyms ? (
+              <div className="grid md:grid-cols-3 gap-4">
+                {[1, 2, 3].map(i => (
+                  <Skeleton key={i} className="h-48 rounded-xl" />
+                ))}
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-3 gap-6">
+                {gyms.slice(0, 3).map((gym) => (
+                  <Link key={gym.id} to={`${createPageUrl("GymDetail")}?id=${gym.id}`}>
+                    <div className="group cursor-pointer">
+                      <div className="relative h-40 mb-3 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+                        <img
+                          src={gym.image_url}
+                          alt={gym.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                        <p className="text-gray-700 font-semibold" style={{ display: 'none' }}>{gym.name}</p>
+                      </div>
+                      <p className={`text-sm text-gray-600 flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-1`}>
+                        <MapPin className="w-4 h-4 text-purple-500" />
+                        {gym.city}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  // Authenticated user view
   return (
     <div className="min-h-screen p-4 md:p-8 select-none">
       <div className="max-w-7xl mx-auto space-y-8">
@@ -123,44 +210,44 @@ export default function Home() {
           </Link>
         </div>
 
-     <div className="bg-white p-6 border border-white/20">
-          <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : ''}`}>{t.featuredGyms}</h2>
+      <div className="bg-white p-6 border border-white/20">
+           <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : ''}`}>{t.featuredGyms}</h2>
 
-          {loadingGyms ? (
-            <div className="grid md:grid-cols-3 gap-4">
-              {[1, 2, 3].map(i => (
-                <Skeleton key={i} className="h-48 rounded-xl" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-3 gap-6">
-              {gyms.slice(0, 3).map((gym) => (
-                <Link key={gym.id} to={`${createPageUrl("GymDetail")}?id=${gym.id}`}>
-                  <div className="group cursor-pointer">
-                    <div className="relative h-40 mb-3 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-                      <img
-                        src={gym.image_url}
-                        alt={gym.name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          e.target.nextSibling.style.display = 'flex';
-                        }}
-                      />
-                      <p className="text-gray-700 font-semibold" style={{ display: 'none' }}>{gym.name}</p>
-                    </div>
-                    <p className={`text-sm text-gray-600 flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-1`}>
-                      <MapPin className="w-4 h-4 text-purple-500" />
-                      {gym.city}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-        
-      </div>
-    </div>
-  );
+           {loadingGyms ? (
+             <div className="grid md:grid-cols-3 gap-4">
+               {[1, 2, 3].map(i => (
+                 <Skeleton key={i} className="h-48 rounded-xl" />
+               ))}
+             </div>
+           ) : (
+             <div className="grid md:grid-cols-3 gap-6">
+               {gyms.slice(0, 3).map((gym) => (
+                 <Link key={gym.id} to={`${createPageUrl("GymDetail")}?id=${gym.id}`}>
+                   <div className="group cursor-pointer">
+                     <div className="relative h-40 mb-3 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+                       <img
+                         src={gym.image_url}
+                         alt={gym.name}
+                         className="w-full h-full object-cover"
+                         onError={(e) => {
+                           e.target.style.display = 'none';
+                           e.target.nextSibling.style.display = 'flex';
+                         }}
+                       />
+                       <p className="text-gray-700 font-semibold" style={{ display: 'none' }}>{gym.name}</p>
+                     </div>
+                     <p className={`text-sm text-gray-600 flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-1`}>
+                       <MapPin className="w-4 h-4 text-purple-500" />
+                       {gym.city}
+                     </p>
+                   </div>
+                 </Link>
+               ))}
+             </div>
+           )}
+         </div>
+         
+       </div>
+     </div>
+   );
 }
