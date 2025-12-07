@@ -58,6 +58,38 @@ export default function Home() {
     staleTime: 10 * 60 * 1000,
   });
 
+  // If not authenticated, show simple landing page
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="mb-8">
+            <div className="relative w-20 h-20 mx-auto mb-6 bg-red-600 flex items-center justify-center rounded-full">
+              <Dumbbell className="w-10 h-10 text-white" strokeWidth={2.5} />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              ENTRINI
+            </h1>
+            <p className="text-lg text-gray-600">
+              {t.subtitle}
+            </p>
+          </div>
+          <div className="space-y-4">
+            <Button asChild className="w-full bg-red-600 hover:bg-red-700 text-white">
+              <Link to={createPageUrl('Register')}>
+                {t.register}
+              </Link>
+            </Button>
+            <Button variant="outline" asChild className="w-full">
+              <Link to={createPageUrl('Login')}>
+                {t.login}
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const { data: gyms, isLoading: loadingGyms } = useQuery({
     queryKey: ['featured-gyms'],
@@ -123,44 +155,44 @@ export default function Home() {
           </Link>
         </div>
 
-     <div className="bg-white p-6 border border-white/20">
-          <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : ''}`}>{t.featuredGyms}</h2>
+      <div className="bg-white p-6 border border-white/20">
+           <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : ''}`}>{t.featuredGyms}</h2>
 
-          {loadingGyms ? (
-            <div className="grid md:grid-cols-3 gap-4">
-              {[1, 2, 3].map(i => (
-                <Skeleton key={i} className="h-48 rounded-xl" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-3 gap-6">
-              {gyms.slice(0, 3).map((gym) => (
-                <Link key={gym.id} to={`${createPageUrl("GymDetail")}?id=${gym.id}`}>
-                  <div className="group cursor-pointer">
-                    <div className="relative h-40 mb-3 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-                      <img
-                        src={gym.image_url}
-                        alt={gym.name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          e.target.nextSibling.style.display = 'flex';
-                        }}
-                      />
-                      <p className="text-gray-700 font-semibold" style={{ display: 'none' }}>{gym.name}</p>
-                    </div>
-                    <p className={`text-sm text-gray-600 flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-1`}>
-                      <MapPin className="w-4 h-4 text-purple-500" />
-                      {gym.city}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-        
-      </div>
+           {loadingGyms ? (
+             <div className="grid md:grid-cols-3 gap-4">
+               {[1, 2, 3].map(i => (
+                 <Skeleton key={i} className="h-48 rounded-xl" />
+               ))}
+             </div>
+           ) : (
+             <div className="grid md:grid-cols-3 gap-6">
+               {gyms.slice(0, 3).map((gym) => (
+                 <Link key={gym.id} to={`${createPageUrl("GymDetail")}?id=${gym.id}`}>
+                   <div className="group cursor-pointer">
+                     <div className="relative h-40 mb-3 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+                       <img
+                         src={gym.image_url}
+                         alt={gym.name}
+                         className="w-full h-full object-cover"
+                         onError={(e) => {
+                           e.target.style.display = 'none';
+                           e.target.nextSibling.style.display = 'flex';
+                         }}
+                       />
+                       <p className="text-gray-700 font-semibold" style={{ display: 'none' }}>{gym.name}</p>
+                     </div>
+                     <p className={`text-sm text-gray-600 flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-1`}>
+                       <MapPin className="w-4 h-4 text-purple-500" />
+                       {gym.city}
+                     </p>
+                   </div>
+                 </Link>
+               ))}
+             </div>
+           )}
+         </div>
+
+       </div>
     </div>
   );
 }

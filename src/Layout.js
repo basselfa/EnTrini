@@ -169,42 +169,46 @@ export default function Layout({ children }) {
                 </h1>
               </div>
 
-              <nav className="hidden md:flex items-center gap-1">
-                {navigationItems.map((item) => (
-                  <Link
-                    key={item.title}
-                    to={item.url}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
-                      location.pathname === item.url
-                        ? 'bg-red-600 text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <item.icon className="w-4 h-4" />
-                    <span>{item.title}</span>
-                  </Link>
-                ))}
-              </nav>
+              {user && (
+                <nav className="hidden md:flex items-center gap-1">
+                  {navigationItems.map((item) => (
+                    <Link
+                      key={item.title}
+                      to={item.url}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
+                        location.pathname === item.url
+                          ? 'bg-red-600 text-white'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      <item.icon className="w-4 h-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  ))}
+                </nav>
+              )}
             </div>
 
             <div className="flex items-center gap-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="md:hidden gap-2">
-                    <Menu className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  {navigationItems.map((item) => (
-                    <DropdownMenuItem key={item.title} asChild>
-                      <Link to={item.url} className="flex items-center gap-3 cursor-pointer">
-                        <item.icon className="w-4 h-4" />
-                        <span>{item.title}</span>
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {user && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="md:hidden gap-2">
+                      <Menu className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    {navigationItems.map((item) => (
+                      <DropdownMenuItem key={item.title} asChild>
+                        <Link to={item.url} className="flex items-center gap-3 cursor-pointer">
+                          <item.icon className="w-4 h-4" />
+                          <span>{item.title}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
