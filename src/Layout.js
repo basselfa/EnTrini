@@ -82,31 +82,16 @@ export default function Layout({ children }) {
   });
   const { user, logout, loading: authLoading } = useAuth();
 
-  // Loading screen component
-  const LoadingScreen = () => (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
-        <p className="text-gray-600">Loading...</p>
-      </div>
-    </div>
-  );
-
-  // Show loading screen while checking authentication
-  if (authLoading) {
-    return <LoadingScreen />;
-  }
-
-  // const { data: userGym } = useQuery({
-  //   queryKey: ['userGym', user?.email],
-  //   queryFn: async () => {
-  //     if (!user?.email) return null;
-  //     const gyms = await base44.entities.Gym.filter({ owner_email: user.email });
-  //     return gyms[0] || null;
-  //   },
-  //   enabled: !!user?.email,
-  //   staleTime: 10 * 60 * 1000,
-  // });
+  const { data: userGym } = useQuery({
+    queryKey: ['userGym', user?.email],
+    queryFn: async () => {
+      if (!user?.email) return null;
+      const gyms = await base44.entities.Gym.filter({ owner_email: user.email });
+      return gyms[0] || null;
+    },
+    enabled: !!user?.email,
+    staleTime: 10 * 60 * 1000,
+  });
 
   useEffect(() => {
     localStorage.setItem('trini213_language', language);
@@ -241,30 +226,45 @@ export default function Layout({ children }) {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 cursor-pointer">
-                    <Avatar className="w-8 h-8 border-2 border-red-600">
-                      <AvatarImage src={user?.profile_image} />
-                      <AvatarFallback className="bg-red-600 text-white font-bold text-sm">
-                        {user?.full_name?.charAt(0)?.toUpperCase() || 'U'}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="hidden sm:block">
-                      <p className="font-semibold text-gray-900 text-sm">
-                        {user?.full_name || (language === 'fr' ? 'Utilisateur' : language === 'ar' ? 'مستخدم' : 'User')}
-                      </p>
-                      <p className="text-xs text-gray-600">{user?.email}</p>
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 cursor-pointer">
+                      <Avatar className="w-8 h-8 border-2 border-red-600">
+                        <AvatarImage src={user?.profile_image} />
+                        <AvatarFallback className="bg-red-600 text-white font-bold text-sm">
+                          {user?.full_name?.charAt(0)?.toUpperCase() || 'U'}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="hidden sm:block">
+                        <p className="font-semibold text-gray-900 text-sm">
+                          {user?.full_name || (language === 'fr' ? 'Utilisateur' : language === 'ar' ? 'مستخدم' : 'User')}
+                        </p>
+                        <p className="text-xs text-gray-600">{user?.email}</p>
+                      </div>
                     </div>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={logout} className="cursor-pointer text-red-600">
-                    <LogOut className="w-4 h-4 mr-2" />
-                    {t.logout || 'Logout'}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem onClick={logout} className="cursor-pointer text-red-600">
+                      <LogOut className="w-4 h-4 mr-2" />
+                      {t.logout || 'Logout'}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" asChild>
+                    <Link to={createPageUrl('Login')}>
+                      {t.login || 'Login'}
+                    </Link>
+                  </Button>
+                  <Button size="sm" asChild className="bg-red-600 hover:bg-red-700">
+                    <Link to={createPageUrl('Register')}>
+                      {t.register || 'Register'}
+                    </Link>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </header>
