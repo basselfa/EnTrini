@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '../Components/ui/card'
 import { Input } from '../Components/ui/input';
 import { Button } from '../Components/ui/button';
 import { Label } from '../Components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../Components/ui/select';
 import { useAuth } from '../contexts/AuthContext';
 import { createPageUrl } from '../utils';
 
@@ -17,6 +18,7 @@ export default function Register() {
     last_name: '',
     birth_date: '',
     phone: '',
+    role: 'member',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -160,6 +162,19 @@ export default function Register() {
                 onChange={handleChange}
                 placeholder="Enter your phone number"
               />
+            </div>
+            <div>
+              <Label htmlFor="role">Role</Label>
+              <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="member">User</SelectItem>
+                  <SelectItem value="gym_owner">Gym Owner</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
