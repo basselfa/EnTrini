@@ -103,50 +103,59 @@ export default function Layout({ children }) {
   const isRTL = language === 'ar';
 
   const navigationItems = useMemo(() => {
-    const items = [
+    const allItems = [
       {
         title: t.home,
         url: createPageUrl("Home"),
         icon: Home,
+        roles: ['member', 'admin'],
       },
       {
         title: t.gyms,
         url: createPageUrl("Gyms"),
         icon: Dumbbell,
+        roles: ['member', 'admin'],
       },
       {
         title: t.map,
         url: createPageUrl("Map"),
         icon: Map,
+        roles: ['member', 'admin'],
       },
       {
         title: t.pricing,
         url: createPageUrl("Pricing"),
         icon: Building2,
+        roles: ['member', 'admin'],
       },
       {
         title: t.profile,
         url: createPageUrl("Profile"),
         icon: User,
+        roles: ['member', 'admin'],
       },
       {
         title: t.membership,
         url: createPageUrl("Membership"),
         icon: CreditCard,
+        roles: ['member', 'admin'],
       },
       {
         title: t.gymDashboard,
         url: createPageUrl("GymOwnerDashboard"),
         icon: Building2,
+        roles: ['gym_owner', 'admin'],
       },
       {
         title: t.scanMember,
         url: createPageUrl("ScanMember"),
         icon: QrCode,
+        roles: ['admin'],
       },
     ];
-    return items;
-  }, [t]);
+    if (!user) return [];
+    return allItems.filter(item => item.roles.includes(user.role));
+  }, [t, user]);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t, isRTL }}>
