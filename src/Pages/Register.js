@@ -8,6 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { useAuth } from '../contexts/AuthContext';
 import { createPageUrl } from '../utils';
 
+const roleDisplayMap = { 'member': 'User', 'gym_owner': 'Gym Owner', 'admin': 'Admin' };
+const roleValueMap = { 'User': 'member', 'Gym Owner': 'gym_owner', 'Admin': 'admin' };
+
 export default function Register() {
   const [formData, setFormData] = useState({
     username: '',
@@ -165,14 +168,16 @@ export default function Register() {
             </div>
             <div>
               <Label htmlFor="role">Role</Label>
-              <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
+              <Select value={roleDisplayMap[formData.role] || 'User'} onValueChange={(displayValue) => {
+                setFormData({ ...formData, role: roleValueMap[displayValue] || 'member' });
+              }}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select your role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="member">User</SelectItem>
-                  <SelectItem value="gym_owner">Gym Owner</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="User">User</SelectItem>
+                  <SelectItem value="Gym Owner">Gym Owner</SelectItem>
+                  <SelectItem value="Admin">Admin</SelectItem>
                 </SelectContent>
               </Select>
             </div>
