@@ -82,6 +82,21 @@ export default function Layout({ children }) {
   });
   const { user, logout, loading: authLoading } = useAuth();
 
+  // Loading screen component
+  const LoadingScreen = () => (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    </div>
+  );
+
+  // Show loading screen while checking authentication
+  if (authLoading) {
+    return <LoadingScreen />;
+  }
+
   const { data: userGym } = useQuery({
     queryKey: ['userGym', user?.email],
     queryFn: async () => {
