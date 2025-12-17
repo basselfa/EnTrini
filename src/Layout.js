@@ -12,7 +12,7 @@ import {
 } from "./Components/ui/dropdown-menu";
 import { useAuth } from "./contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
-import ChatWidget from "./Components/chat/ChatWidget";
+// import ChatWidget from "./Components/chat/ChatWidget";
 
 const translations = {
   en: {
@@ -288,8 +288,8 @@ export default function Layout({ children }) {
         </main>
       </div>
 
-      {/* Chat Widget */}
-      <ChatWidget />
+      {/* Chat Widget - Hidden */}
+      {/* <ChatWidget /> */}
     </LanguageContext.Provider>
   );
 }
