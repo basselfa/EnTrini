@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { Home, Dumbbell, User, Building2, Menu, Globe, Map, QrCode, CreditCard, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./Components/ui/avatar";
@@ -77,6 +77,7 @@ export const useLanguage = () => {
 
 export default function Layout({ children }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem('trini213_language') || 'en';
   });
@@ -258,7 +259,7 @@ export default function Layout({ children }) {
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
-                    <DropdownMenuItem onClick={logout} className="cursor-pointer text-red-600">
+                    <DropdownMenuItem onClick={() => { logout(); navigate(createPageUrl('Login')); }} className="cursor-pointer text-red-600">
                       <LogOut className="w-4 h-4 mr-2" />
                       {t.logout || 'Logout'}
                     </DropdownMenuItem>

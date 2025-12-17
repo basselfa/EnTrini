@@ -52,12 +52,7 @@ const translations = {
 export default function Home() {
   const { language, isRTL } = useLanguage();
   const t = translations[language] || translations.en;
-
-  const { data: user } = useQuery({
-    queryKey: ['currentUser'],
-    queryFn: () => base44.auth.me(),
-    staleTime: 10 * 60 * 1000,
-  });
+  const { user } = useAuth();
 
   // If not authenticated, redirect to login
   if (!user) {
