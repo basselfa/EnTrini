@@ -228,14 +228,14 @@ export default function Layout({ children }) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => setLanguage('en')} className="cursor-pointer">
-                    <span className="text-2xl mr-2">🇬🇧</span> English
+                  <DropdownMenuItem onClick={() => setLanguage('en')} className="flex items-center cursor-pointer">
+                    English
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setLanguage('fr')} className="cursor-pointer">
-                    <span className="text-2xl mr-2">🇫🇷</span> Français
+                  <DropdownMenuItem onClick={() => setLanguage('fr')} className="flex items-center cursor-pointer">
+                    Français
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setLanguage('ar')} className="cursor-pointer">
-                    <span className="text-2xl mr-2">🇩🇿</span> العربية
+                  <DropdownMenuItem onClick={() => setLanguage('ar')} className="flex items-center cursor-pointer">
+                    العربية
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
