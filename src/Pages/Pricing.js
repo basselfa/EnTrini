@@ -52,7 +52,7 @@ const translations = {
       professional: "Professional",
       royal: "Royal"
     },
-    validityNote: "All plans are valid for 30 days (1 month) from purchase date"
+    validityNote: "All plans are valid for 1 month from purchase date. You can only purchase plans at the beginning of the month."
   },
   fr: {
     title: "Choisissez Votre Forfait",
@@ -95,7 +95,7 @@ const translations = {
       professional: "Professionnel",
       royal: "Royal"
     },
-    validityNote: "Tous les forfaits sont valables 30 jours (1 mois) à partir de la date d'achat"
+    validityNote: "Tous les forfaits sont valables 1 mois à partir de la date d'achat. Vous ne pouvez acheter des forfaits qu'au début du mois."
   },
   ar: {
     title: "اختر باقتك",
@@ -138,7 +138,7 @@ const translations = {
       professional: "احترافي",
       royal: "ملكي"
     },
-    validityNote: "جميع الباقات صالحة لمدة 30 يوماً (شهر واحد) من تاريخ الشراء"
+    validityNote: "جميع الباقات صالحة لمدة شهر واحد من تاريخ الشراء. يمكنك شراء الباقات فقط في بداية الشهر."
   }
 };
 
