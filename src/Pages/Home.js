@@ -8,6 +8,7 @@ import { Link, Navigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { Button } from "../Components/ui/button";
 import { useLanguage } from "../Layout";
+import { useAuth } from "../contexts/AuthContext";
 
 const translations = {
   en: {
