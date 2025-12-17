@@ -7,7 +7,7 @@ import { Input } from "../Components/ui/input";
 import { Label } from "../Components/ui/label";
 import { Textarea } from "../Components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "../Components/ui/avatar";
-import { User, Mail, Phone, MapPin, Calendar, Heart, Save, Loader2, QrCode } from "lucide-react";
+import { User, Mail, Phone, MapPin, Calendar, Save, Loader2, QrCode } from "lucide-react";
 import { Skeleton } from "../Components/ui/skeleton";
 import { useLanguage } from "../Layout";
 import QRCodeComponent from "../Components/profile/QRCodeComponent";
@@ -113,9 +113,6 @@ export default function Profile() {
     address: user?.address || '',
     city: user?.city || '',
     birth_date: user?.birth_date || '',
-    emergency_contact: user?.emergency_contact || '',
-    emergency_phone: user?.emergency_phone || '',
-    fitness_goals: user?.fitness_goals || '',
   });
 
   const updateMutation = useMutation({
@@ -258,38 +255,7 @@ export default function Profile() {
                           placeholder={t.yourAddress}
                         />
                       </FormField>
-
-                      <FormField label={t.emergencyContact} isRTL={isRTL}>
-                        <Input
-                          id="emergency_contact"
-                          value={formData.emergency_contact}
-                          onChange={(e) => setFormData({...formData, emergency_contact: e.target.value})}
-                          disabled={!isEditing}
-                          placeholder={t.contactName}
-                        />
-                      </FormField>
-
-                      <FormField label={t.emergencyPhone} isRTL={isRTL}>
-                        <Input
-                          id="emergency_phone"
-                          value={formData.emergency_phone}
-                          onChange={(e) => setFormData({...formData, emergency_phone: e.target.value})}
-                          disabled={!isEditing}
-                          placeholder={t.emergencyNumber}
-                        />
-                      </FormField>
                     </div>
-
-                    <FormField label={t.fitnessGoals} icon={Heart} isRTL={isRTL}>
-                      <Textarea
-                        id="fitness_goals"
-                        value={formData.fitness_goals}
-                        onChange={(e) => setFormData({...formData, fitness_goals: e.target.value})}
-                        disabled={!isEditing}
-                        placeholder={t.fitnessGoalsPlaceholder}
-                        className="h-24"
-                      />
-                    </FormField>
 
                     {isEditing && (
                       <Button
