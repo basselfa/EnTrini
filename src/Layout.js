@@ -130,12 +130,6 @@ export default function Layout({ children }) {
         roles: ['member', 'admin'],
       },
       {
-        title: t.profile,
-        url: createPageUrl("Profile"),
-        icon: User,
-        roles: ['member', 'admin'],
-      },
-      {
         title: t.membership,
         url: createPageUrl("Membership"),
         icon: CreditCard,
@@ -240,31 +234,28 @@ export default function Layout({ children }) {
                 </DropdownMenuContent>
               </DropdownMenu>
 
+              {user && (
+                <Button variant="outline" size="sm" className="gap-2" onClick={() => { logout(); navigate(createPageUrl('Login')); }}>
+                  <LogOut className="w-4 h-4 text-red-600" />
+                  <span className="hidden sm:inline">{t.logout}</span>
+                </Button>
+              )}
+
               {user ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 cursor-pointer">
-                      <Avatar className="w-8 h-8 border-2 border-red-600">
-                        <AvatarImage src={user?.profile_image} />
-                        <AvatarFallback className="bg-red-600 text-white font-bold text-sm">
-                          {user?.full_name?.charAt(0)?.toUpperCase() || 'U'}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="hidden sm:block">
-                        <p className="font-semibold text-gray-900 text-sm">
-                          {user?.full_name || (language === 'fr' ? 'Utilisateur' : language === 'ar' ? 'مستخدم' : 'User')}
-                        </p>
-                        <p className="text-xs text-gray-600">{user?.email}</p>
-                      </div>
-                    </div>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48">
-                    <DropdownMenuItem onClick={() => { logout(); navigate(createPageUrl('Login')); }} className="cursor-pointer text-red-600">
-                      <LogOut className="w-4 h-4 mr-2" />
-                      {t.logout || 'Logout'}
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <Link to={createPageUrl('Profile')} className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors">
+                  <Avatar className="w-8 h-8 border-2 border-red-600">
+                    <AvatarImage src={user?.profile_image} />
+                    <AvatarFallback className="bg-red-600 text-white font-bold text-sm">
+                      {user?.full_name?.charAt(0)?.toUpperCase() || 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="hidden sm:block">
+                    <p className="font-semibold text-gray-900 text-sm">
+                      {user?.full_name || (language === 'fr' ? 'Utilisateur' : language === 'ar' ? 'مستخدم' : 'User')}
+                    </p>
+                    <p className="text-xs text-gray-600">{user?.email}</p>
+                  </div>
+                </Link>
               ) : (
                 <div className="flex items-center gap-2">
                   <Button variant="outline" size="sm" asChild>

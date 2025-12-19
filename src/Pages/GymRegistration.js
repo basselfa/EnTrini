@@ -327,7 +327,7 @@ export default function GymRegistration() {
                     <SelectContent className="max-h-[300px]">
                       {ALGERIAN_WILAYAS.map(wilaya => (
                         <SelectItem key={wilaya.code} value={wilaya.name}>
-                          {wilaya.code} - {getWilayaName(wilaya)}
+                          {getWilayaName(wilaya)}
                         </SelectItem>
                       ))}
                     </SelectContent>

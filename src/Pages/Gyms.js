@@ -165,7 +165,7 @@ export default function Gyms() {
                   <SelectItem value="all">{t.allWilayas}</SelectItem>
                   {ALGERIAN_WILAYAS.map(wilaya => (
                     <SelectItem key={wilaya.code} value={wilaya.name}>
-                      {wilaya.code} - {getWilayaName(wilaya)}
+                      {getWilayaName(wilaya)}
                     </SelectItem>
                   ))}
                 </SelectContent>
