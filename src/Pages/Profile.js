@@ -19,6 +19,8 @@ const translations = {
     editProfile: "Edit Profile",
     cancel: "Cancel",
     personalInfo: "Personal Information",
+    firstName: "First Name",
+    lastName: "Last Name",
     phone: "Phone",
     birthDate: "Birth Date",
     city: "City",
@@ -43,6 +45,8 @@ const translations = {
     editProfile: "Modifier le Profil",
     cancel: "Annuler",
     personalInfo: "Informations Personnelles",
+    firstName: "Prénom",
+    lastName: "Nom de Famille",
     phone: "Téléphone",
     birthDate: "Date de Naissance",
     city: "Ville",
@@ -67,6 +71,8 @@ const translations = {
     editProfile: "تعديل الملف الشخصي",
     cancel: "إلغاء",
     personalInfo: "المعلومات الشخصية",
+    firstName: "الاسم الأول",
+    lastName: "اسم العائلة",
     phone: "الهاتف",
     birthDate: "تاريخ الميلاد",
     city: "المدينة",
@@ -109,6 +115,8 @@ export default function Profile() {
   });
 
   const [formData, setFormData] = useState({
+    first_name: user?.first_name || '',
+    last_name: user?.last_name || '',
     phone: user?.phone || '',
     address: user?.address || '',
     city: user?.city || '',
@@ -157,35 +165,11 @@ export default function Profile() {
                 <Avatar className="w-32 h-32 border-4 border-white shadow-xl">
                   <AvatarImage src={user?.profile_image} />
                   <AvatarFallback className="bg-gradient-to-br from-emerald-600 via-white to-amber-500 text-4xl font-bold">
-                    <svg viewBox="0 0 100 100" className="w-16 h-16">
-                      <defs>
-                        <linearGradient id="starGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" style={{stopColor: '#FFD700', stopOpacity: 1}} />
-                          <stop offset="100%" style={{stopColor: '#FFA500', stopOpacity: 1}} />
-                        </linearGradient>
-                      </defs>
-                      <circle cx="50" cy="50" r="18" fill="url(#starGradient2)" opacity="0.3"/>
-                      <path 
-                        d="M50 25 L57 45 L78 45 L62 57 L69 77 L50 65 L31 77 L38 57 L22 45 L43 45 Z" 
-                        fill="url(#starGradient2)" 
-                        stroke="#FFFFFF" 
-                        strokeWidth="1.5"
-                      />
-                      <path 
-                        d="M35 50 Q35 40, 42 35 M65 50 Q65 40, 58 35" 
-                        stroke="#00965E" 
-                        strokeWidth="3" 
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                      <circle cx="42" cy="52" r="2" fill="#FF0000"/>
-                      <circle cx="58" cy="52" r="2" fill="#FF0000"/>
-                      <ellipse cx="50" cy="60" rx="8" ry="4" fill="#00965E" opacity="0.6"/>
-                    </svg>
+                    {user?.first_name?.charAt(0)?.toUpperCase() || 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <div className="text-center md:text-left flex-1">
-                  <h2 className="text-2xl font-bold text-gray-900">{user?.full_name}</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">{`${user?.first_name || ''} ${user?.last_name || ''}`.trim() || 'User'}</h2>
                   <p className={`text-gray-500 flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-2 justify-center md:justify-start`}>
                     <Mail className="w-4 h-4" />
                     {user?.email}

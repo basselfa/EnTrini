@@ -100,6 +100,12 @@ export default function Layout({ children }) {
     document.documentElement.lang = language;
   }, [language]);
 
+  useEffect(() => {
+    if (user && (location.pathname === createPageUrl('Login') || location.pathname === createPageUrl('Register'))) {
+      navigate(createPageUrl('Home'));
+    }
+  }, [user, location.pathname, navigate]);
+
   const t = translations[language];
   const isRTL = language === 'ar';
 
@@ -246,14 +252,13 @@ export default function Layout({ children }) {
                   <Avatar className="w-8 h-8 border-2 border-red-600">
                     <AvatarImage src={user?.profile_image} />
                     <AvatarFallback className="bg-red-600 text-white font-bold text-sm">
-                      {user?.full_name?.charAt(0)?.toUpperCase() || 'U'}
+                      {user?.first_name?.charAt(0)?.toUpperCase() || 'U'}
                     </AvatarFallback>
                   </Avatar>
                   <div className="hidden sm:block">
                     <p className="font-semibold text-gray-900 text-sm">
-                      {user?.full_name || (language === 'fr' ? 'Utilisateur' : language === 'ar' ? 'مستخدم' : 'User')}
+                      {`${user?.first_name || ''} ${user?.last_name || ''}`.trim() || (language === 'fr' ? 'Utilisateur' : language === 'ar' ? 'مستخدم' : 'User')}
                     </p>
-                    <p className="text-xs text-gray-600">{user?.email}</p>
                   </div>
                 </Link>
               ) : (
