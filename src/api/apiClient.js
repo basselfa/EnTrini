@@ -1,6 +1,8 @@
 // API client for Django backend
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://entrini-production-backend.up.railway.app/api';
+const API_BASE_URL = process.env.REACT_APP_USE_LOCAL_BACKEND === 'true'
+  ? 'http://localhost:8001/api'
+  : (process.env.REACT_APP_API_BASE_URL || 'https://entrini-production-backend.up.railway.app/api');
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('access_token');
@@ -25,7 +27,7 @@ const apiRequest = async (endpoint, options = {}) => {
   return response.json();
 };
 
-export const base44 = {
+export const api = {
   auth: {
     login: async (username, password) => {
       const response = await fetch(`${API_BASE_URL}/token/`, {

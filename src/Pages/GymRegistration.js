@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "../api/base44Client";
+import { api } from "../api/apiClient";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "../Components/ui/card";
 import { Button } from "../Components/ui/button";
@@ -181,7 +181,7 @@ export default function GymRegistration() {
 
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
-    queryFn: () => base44.auth.me(),
+    queryFn: () => api.auth.me(),
   });
 
   const [formData, setFormData] = useState({
@@ -201,7 +201,7 @@ export default function GymRegistration() {
   const [uploadingImage, setUploadingImage] = useState(false);
 
   const createGymMutation = useMutation({
-    mutationFn: (data) => base44.entities.Gym.create(data),
+    mutationFn: (data) => api.entities.Gym.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['gyms'] });
       navigate(createPageUrl("Gyms"));
@@ -214,7 +214,7 @@ export default function GymRegistration() {
 
     setUploadingImage(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await api.integrations.Core.UploadFile({ file });
       setFormData({ ...formData, image_url: file_url });
     } catch (error) {
       console.error("Error uploading image:", error);

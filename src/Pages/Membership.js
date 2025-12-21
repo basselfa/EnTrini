@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "../api/base44Client";
+import { api } from "../api/apiClient";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "../Components/ui/skeleton";
 import MembershipCard from "../Components/home/MembershipCard";
@@ -26,14 +26,14 @@ export default function Membership() {
 
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
-    queryFn: () => base44.auth.me(),
+    queryFn: () => api.auth.me(),
   });
 
   const { data: membership, isLoading } = useQuery({
     queryKey: ['myMembership', user?.email],
     queryFn: async () => {
       if (!user?.email) return null;
-      const memberships = await base44.entities.Membership.filter(
+      const memberships = await api.entities.Membership.filter(
         { user_email: user.email, status: 'active' },
         '-created_date',
         1

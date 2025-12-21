@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "../api/base44Client";
+import { api } from "../api/apiClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "../Components/ui/card";
 import { Button } from "../Components/ui/button";
@@ -93,24 +93,24 @@ export default function GymDetail() {
 
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
-    queryFn: () => base44.auth.me(),
+    queryFn: () => api.auth.me(),
   });
 
   const { data: gyms, isLoading } = useQuery({
     queryKey: ['gyms'],
-    queryFn: () => base44.entities.Gym.list(),
+    queryFn: () => api.entities.Gym.list(),
     initialData: [],
   });
 
   const { data: feedbacks, isLoading: loadingFeedbacks } = useQuery({
     queryKey: ['gym-feedbacks', gymId],
-    queryFn: () => base44.entities.GymFeedback.filter({ gym_id: gymId }, '-created_date'),
+    queryFn: () => api.entities.GymFeedback.filter({ gym_id: gymId }, '-created_date'),
     initialData: [],
     enabled: !!gymId,
   });
 
   const submitFeedbackMutation = useMutation({
-    mutationFn: (feedbackData) => base44.entities.GymFeedback.create(feedbackData),
+    mutationFn: (feedbackData) => api.entities.GymFeedback.create(feedbackData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['gym-feedbacks', gymId] });
       setNewReview({ rating: 5, comment: "" });

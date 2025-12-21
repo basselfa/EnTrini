@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "../api/base44Client";
+import { api } from "../api/apiClient";
 import { useQuery } from "@tanstack/react-query";
 import { Dumbbell, Building2, TrendingUp, MapPin } from "lucide-react";
 import { Skeleton } from "../Components/ui/skeleton";
@@ -62,7 +62,7 @@ export default function Home() {
   const { data: gyms, isLoading: loadingGyms } = useQuery({
     queryKey: ['featured-gyms'],
     queryFn: async () => {
-      const result = await base44.entities.Gym.filter({ status: 'active', featured: true });
+      const result = await api.entities.Gym.filter({ status: 'active', featured: true });
       return result;
     },
     initialData: [],
@@ -74,7 +74,7 @@ export default function Home() {
     queryKey: ['myPayments', user?.email],
     queryFn: async () => {
       if (!user?.email) return [];
-      return await base44.entities.Payment.filter({ user_email: user.email });
+      return await api.entities.Payment.filter({ user_email: user.email });
     },
     enabled: !!user?.email,
     initialData: [],

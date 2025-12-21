@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "../api/base44Client";
+import { api } from "../api/apiClient";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "../Components/ui/card";
 import { Button } from "../Components/ui/button";
@@ -100,14 +100,14 @@ export default function GymOwnerDashboard() {
 
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
-    queryFn: () => base44.auth.me(),
+    queryFn: () => api.auth.me(),
   });
 
   const { data: gym, isLoading: loadingGym } = useQuery({
     queryKey: ['userGym', user?.email],
     queryFn: async () => {
       if (!user?.email) return null;
-      const gyms = await base44.entities.Gym.filter({ owner_email: user.email });
+      const gyms = await api.entities.Gym.filter({ owner_email: user.email });
       return gyms[0] || null;
     },
     enabled: !!user?.email,
@@ -117,7 +117,7 @@ export default function GymOwnerDashboard() {
     queryKey: ['gymCheckIns', gym?.id],
     queryFn: async () => {
       if (!gym?.id) return [];
-      return await base44.entities.CheckIn.filter({ gym_id: gym.id }, '-check_in_time', 100);
+      return await api.entities.CheckIn.filter({ gym_id: gym.id }, '-check_in_time', 100);
     },
     enabled: !!gym?.id,
     initialData: [],
@@ -125,7 +125,7 @@ export default function GymOwnerDashboard() {
 
   const { data: allMemberships } = useQuery({
     queryKey: ['allMemberships'],
-    queryFn: () => base44.entities.Membership.filter({ status: 'active' }),
+    queryFn: () => api.entities.Membership.filter({ status: 'active' }),
     initialData: [],
   });
 

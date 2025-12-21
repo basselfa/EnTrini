@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { base44 } from '../api/base44Client';
+import { api } from '../api/apiClient';
 
 const AuthContext = createContext();
 
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const token = localStorage.getItem('access_token');
       if (token) {
-        const userData = await base44.auth.me();
+        const userData = await api.auth.me();
         setUser(userData);
       }
     } catch (error) {
@@ -36,14 +36,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (username, password) => {
-    const data = await base44.auth.login(username, password);
-    const userData = await base44.auth.me();
+    const data = await api.auth.login(username, password);
+    const userData = await api.auth.me();
     setUser(userData);
     return data;
   };
 
   const register = async (userData) => {
-    const data = await base44.auth.register(userData);
+    const data = await api.auth.register(userData);
     // Auto login after registration
     await login(userData.username, userData.password);
     return data;
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateUser = async (userData) => {
-    const updatedUser = await base44.auth.updateMe(userData);
+    const updatedUser = await api.auth.updateMe(userData);
     setUser(updatedUser);
     return updatedUser;
   };

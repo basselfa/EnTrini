@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { base44 } from "../api/base44Client";
+import { api } from "../api/apiClient";
 import { useQuery } from "@tanstack/react-query";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { Card, CardContent } from "../Components/ui/card";
@@ -189,7 +189,7 @@ export default function Map() {
 
   const { data: gyms, isLoading } = useQuery({
     queryKey: ['gyms'],
-    queryFn: () => base44.entities.Gym.list(),
+    queryFn: () => api.entities.Gym.list(),
     initialData: [],
   });
 

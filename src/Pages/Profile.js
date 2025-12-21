@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { base44 } from "../api/base44Client";
+import React, { useState, useEffect } from "react";
+import { api } from "../api/apiClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "../Components/ui/card";
 import { Button } from "../Components/ui/button";
@@ -111,20 +111,33 @@ export default function Profile() {
 
   const { data: user, isLoading } = useQuery({
     queryKey: ['currentUser'],
-    queryFn: () => base44.auth.me(),
+    queryFn: () => api.auth.me(),
   });
 
   const [formData, setFormData] = useState({
-    first_name: user?.first_name || '',
-    last_name: user?.last_name || '',
-    phone: user?.phone || '',
-    address: user?.address || '',
-    city: user?.city || '',
-    birth_date: user?.birth_date || '',
+    first_name: '',
+    last_name: '',
+    phone: '',
+    address: '',
+    city: '',
+    birth_date: '',
   });
 
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        first_name: user.first_name || '',
+        last_name: user.last_name || '',
+        phone: user.phone || '',
+        address: user.address || '',
+        city: user.city || '',
+        birth_date: user.birth_date || '',
+      });
+    }
+  }, [user]);
+
   const updateMutation = useMutation({
-    mutationFn: (data) => base44.auth.updateMe(data),
+    mutationFn: (data) => api.auth.updateMe(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['currentUser'] });
       setIsEditing(false);

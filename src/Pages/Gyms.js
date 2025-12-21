@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "../api/base44Client";
+import { api } from "../api/apiClient";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "../Components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../Components/ui/select";
@@ -108,7 +108,7 @@ export default function Gyms() {
 
   const { data: gyms, isLoading } = useQuery({
     queryKey: ['gyms'],
-    queryFn: () => base44.entities.Gym.list('-created_date'),
+    queryFn: () => api.entities.Gym.list('-created_date'),
     initialData: [],
   });
 

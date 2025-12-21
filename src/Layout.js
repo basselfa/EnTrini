@@ -87,7 +87,7 @@ export default function Layout({ children }) {
     queryKey: ['userGym', user?.email],
     queryFn: async () => {
       if (!user?.email) return null;
-      const gyms = await base44.entities.Gym.filter({ owner_email: user.email });
+      const gyms = await api.entities.Gym.filter({ owner_email: user.email });
       return gyms[0] || null;
     },
     enabled: !!user?.email,

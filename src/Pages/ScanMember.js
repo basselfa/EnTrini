@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "../api/base44Client";
+import { api } from "../api/apiClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "../Components/ui/card";
 import { Button } from "../Components/ui/button";
@@ -176,14 +176,14 @@ export default function ScanMember() {
 
   const { data: currentUser } = useQuery({
     queryKey: ['currentUser'],
-    queryFn: () => base44.auth.me(),
+    queryFn: () => api.auth.me(),
   });
 
   const { data: userGym } = useQuery({
     queryKey: ['userGym', currentUser?.email],
     queryFn: async () => {
       if (!currentUser?.email) return null;
-      const gyms = await base44.entities.Gym.filter({ owner_email: currentUser.email });
+      const gyms = await api.entities.Gym.filter({ owner_email: currentUser.email });
       return gyms[0] || null;
     },
     enabled: !!currentUser?.email,
@@ -197,7 +197,7 @@ export default function ScanMember() {
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
-      const checkIns = await base44.entities.CheckIn.filter({
+      const checkIns = await api.entities.CheckIn.filter({
         gym_id: userGym.id,
         check_in_time: { $gte: today.toISOString(), $lt: tomorrow.toISOString() }
       }, '-check_in_time');
@@ -210,11 +210,11 @@ export default function ScanMember() {
   const checkInMutation = useMutation({
     mutationFn: async ({ checkInData, membershipId, newRemainingVisits, isPaid, paymentMethod }) => {
       // Create check-in
-      const checkIn = await base44.entities.CheckIn.create(checkInData);
+      const checkIn = await api.entities.CheckIn.create(checkInData);
       
       if (isPaid) {
         // Create single visit payment record
-        await base44.entities.SingleVisitPayment.create({
+        await api.entities.SingleVisitPayment.create({
           user_email: checkInData.user_email,
           gym_id: checkInData.gym_id,
           gym_name: checkInData.gym_name,
@@ -228,7 +228,7 @@ export default function ScanMember() {
         });
       } else if (membershipId && newRemainingVisits !== undefined) {
         // Update membership remaining visits (only if using plan visit)
-        await base44.entities.Membership.update(membershipId, {
+        await api.entities.Membership.update(membershipId, {
           remaining_visits: newRemainingVisits
         });
       }
@@ -258,7 +258,7 @@ export default function ScanMember() {
       const parts = memberId.includes(':') ? memberId.split(':') : [null, memberId, null];
       const userId = parts[1];
 
-      const users = await base44.entities.User.filter({ id: userId });
+      const users = await api.entities.User.filter({ id: userId });
       const user = users[0];
 
       if (!user) {
@@ -269,7 +269,7 @@ export default function ScanMember() {
 
       setMemberData(user);
 
-      const memberships = await base44.entities.Membership.filter(
+      const memberships = await api.entities.Membership.filter(
         { user_email: user.email, status: 'active' },
         '-created_date',
         1

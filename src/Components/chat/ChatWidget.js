@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { base44 } from "../../api/base44Client";
+import { api } from "../../api/apiClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "../../Components/ui/button";
 import { Input } from "../../Components/ui/input";
@@ -122,14 +122,14 @@ export default function ChatWidget() {
 
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
-    queryFn: () => base44.auth.me(),
+    queryFn: () => api.auth.me(),
   });
 
   const { data: activeSession } = useQuery({
     queryKey: ['activeSession', user?.email],
     queryFn: async () => {
       if (!user?.email) return null;
-      const sessions = await base44.entities.ChatSession.filter(
+      const sessions = await api.entities.ChatSession.filter(
         { user_email: user.email, status: ['active_ai', 'active_human'] },
         '-last_message_time',
         1
@@ -144,7 +144,7 @@ export default function ChatWidget() {
     queryKey: ['chatMessages', activeSession?.id],
     queryFn: async () => {
       if (!activeSession?.id) return [];
-      return await base44.entities.ChatMessage.filter(
+      return await api.entities.ChatMessage.filter(
         { session_id: activeSession.id },
         'timestamp'
       );
@@ -156,7 +156,7 @@ export default function ChatWidget() {
 
   const createSessionMutation = useMutation({
     mutationFn: async () => {
-      return await base44.entities.ChatSession.create({
+      return await api.entities.ChatSession.create({
         user_email: user.email,
         user_name: user.full_name,
         status: 'active_ai',
@@ -170,7 +170,7 @@ export default function ChatWidget() {
 
   const sendMessageMutation = useMutation({
     mutationFn: async ({ sessionId, message, senderType }) => {
-      await base44.entities.ChatMessage.create({
+      await api.entities.ChatMessage.create({
         session_id: sessionId,
         sender_type: senderType,
         sender_email: user?.email,
@@ -178,7 +178,7 @@ export default function ChatWidget() {
         timestamp: new Date().toISOString(),
       });
 
-      await base44.entities.ChatSession.update(sessionId, {
+      await api.entities.ChatSession.update(sessionId, {
         last_message_time: new Date().toISOString(),
       });
 
@@ -192,12 +192,12 @@ export default function ChatWidget() {
 
   const requestHumanMutation = useMutation({
     mutationFn: async (sessionId) => {
-      await base44.entities.ChatSession.update(sessionId, {
+      await api.entities.ChatSession.update(sessionId, {
         status: 'active_human',
         last_message_time: new Date().toISOString(),
       });
 
-      await base44.entities.ChatMessage.create({
+      await api.entities.ChatMessage.create({
         session_id: sessionId,
         sender_type: 'ai',
         message: 'A human support agent will join you shortly. Please wait...',
@@ -230,7 +230,7 @@ export default function ChatWidget() {
   const getAIResponse = async (sessionId, userMessage) => {
     setIsAITyping(true);
     try {
-      const aiResponse = await base44.integrations.Core.InvokeLLM({
+      const aiResponse = await api.integrations.Core.InvokeLLM({
         prompt: AI_PROMPT_TEMPLATE(userMessage, language),
         add_context_from_internet: false,
       });

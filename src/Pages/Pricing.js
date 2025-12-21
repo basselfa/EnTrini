@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "../api/base44Client";
+import { api } from "../api/apiClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "../Components/ui/card";
 import { Button } from "../Components/ui/button";
@@ -187,14 +187,14 @@ export default function Pricing() {
 
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
-    queryFn: () => base44.auth.me(),
+    queryFn: () => api.auth.me(),
   });
 
   const { data: membership } = useQuery({
     queryKey: ['myMembership', user?.email],
     queryFn: async () => {
       if (!user?.email) return null;
-      const memberships = await base44.entities.Membership.filter(
+      const memberships = await api.entities.Membership.filter(
         { user_email: user.email, status: 'active' },
         '-created_date',
         1
@@ -211,7 +211,7 @@ export default function Pricing() {
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 30);
 
-      await base44.entities.Membership.create({
+      await api.entities.Membership.create({
         user_email: user.email,
         plan_type: planType,
         status: 'active',
@@ -222,7 +222,7 @@ export default function Pricing() {
         expiry_date: expiryDate.toISOString().split('T')[0],
       });
 
-      await base44.entities.Payment.create({
+      await api.entities.Payment.create({
         user_email: user.email,
         amount: plan.price,
         payment_method: 'credit_card',
