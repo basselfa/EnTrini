@@ -147,12 +147,7 @@ export default function Layout({ children }) {
         icon: Building2,
         roles: ['gym_owner', 'admin'],
       },
-      {
-        title: t.scanMember,
-        url: createPageUrl("ScanMember"),
-        icon: QrCode,
-        roles: ['admin'],
-      },
+
     ];
     if (!user) return [];
     return allItems.filter(item => item.roles.includes(user.role));
