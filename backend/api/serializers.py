@@ -18,10 +18,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 class GymSerializer(serializers.ModelSerializer):
     owner_email = serializers.EmailField(source='owner.email', read_only=True)
-    
+
     class Meta:
         model = Gym
         fields = '__all__'
+        read_only_fields = ['owner']
 
 class MembershipSerializer(serializers.ModelSerializer):
     user_email = serializers.EmailField(source='user.email', read_only=True)

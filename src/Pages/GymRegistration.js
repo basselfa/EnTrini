@@ -186,7 +186,6 @@ export default function GymRegistration() {
 
   const [formData, setFormData] = useState({
     name: '',
-    owner_email: user?.email || '',
     description: '',
     address: '',
     city: '',
@@ -204,7 +203,7 @@ export default function GymRegistration() {
     mutationFn: (data) => api.entities.Gym.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['gyms'] });
-      navigate(createPageUrl("Gyms"));
+      navigate(createPageUrl("GymOwnerDashboard"));
     },
   });
 

@@ -104,13 +104,13 @@ export default function GymOwnerDashboard() {
   });
 
   const { data: gym, isLoading: loadingGym } = useQuery({
-    queryKey: ['userGym', user?.email],
+    queryKey: ['userGym', user?.username],
     queryFn: async () => {
-      if (!user?.email) return null;
-      const gyms = await api.entities.Gym.filter({ owner_email: user.email });
+      if (!user?.username) return null;
+      const gyms = await api.entities.Gym.filter({ owner_username: user.username });
       return gyms[0] || null;
     },
-    enabled: !!user?.email,
+    enabled: !!user?.username,
   });
 
   const { data: allCheckIns, isLoading: loadingCheckIns } = useQuery({
